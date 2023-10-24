@@ -9,9 +9,9 @@ const handleLoging = async (req, res) => {
     console.log("kkk " + req.session.user_session);
 
     if (!username || !password) {
-        return res.status(500).json({
-        errCode: 1,
-        message: 'Missing inputs parameter!.',
+        return res.status(200).json({
+            errCode: 1,
+            message: 'Missing inputs parameter!.',
         });
     }
 
