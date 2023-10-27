@@ -3,11 +3,15 @@ const bcrypt = require('bcrypt');
 
 
 class Account {
-    constructor(username, password) {
+    constructor(username, password, fullName, birth, gender, idZodiac) {
         this.username = username;
         this.password = password;
         this.isDelete = 0;
         this.idRole = 1;
+        this.fullName = fullName;
+        this.birth = birth;
+        this.gender = gender;
+        this.idZodiac = idZodiac;
     }
 
     async checkUsername() {
@@ -163,7 +167,6 @@ class Account {
         }
     }
 
-
     async getAllAccount() {
         return new Promise((resolve, reject) => {
             const fetchQuery = `select * FROM user INNER JOIN inforcustomer ON idUser = idCustomer where isDelete = 0`;
@@ -172,6 +175,20 @@ class Account {
                     return reject(err);
                 }
                 return resolve(results);
+            });
+        })
+    }
+
+
+    async addAccount(username, password, fullName, date, gender, idZodiac) {
+        return new Promise(async (resolve, reject) => {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const query = `insert into user(idRole, username, password, fullName, birth, gender, idZodiac, numberWarning, isDelete) values(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            db.query(query, [0, username, hashedPassword, fullName, date, gender, idZodiac, 0, 0], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(true);
             });
         })
     }
@@ -214,6 +231,6 @@ class Account {
         })
     }
 
-
+    
 }
 module.exports = Account;

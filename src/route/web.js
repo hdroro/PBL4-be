@@ -7,6 +7,7 @@ let initWebRoutes = (app) => {
 
     router.post('/api/login', userController.handleLoging);
     router.get('/api/matching', userController.getMatching);
+    router.post('/api/signup', userController.handleSignup);
 
     return app.use("/", router);
 }

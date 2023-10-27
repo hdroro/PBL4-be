@@ -36,8 +36,24 @@ const getMatching = async (req, res) => {
     }
 }
 
-
+const handleSignup = async (req, res) => {
+    const {username, password, fullname, date, gender} = req.body;
+    if(!username || !password || !fullname || !date) {
+        return res.status(200).json({
+            errCode: 4,
+            message: 'Missing inputs parameter!.',
+        });
+    }
+    const userData = await userService.handleUserSignUp(username, password, fullname, date, gender);
+    return res.status(200).json({
+        errCode: userData.errCode,
+        message: userData.errMessage,
+        user: userData.user ? userData.user : {},
+    });
+    
+}
 module.exports = {
     handleLoging: handleLoging,
-    getMatching: getMatching
+    getMatching: getMatching,
+    handleSignup: handleSignup,
 }
