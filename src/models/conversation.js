@@ -32,6 +32,10 @@ class Conversation {
                                         ORDER BY maxMessages.maxTimeSend DESC`;
                         db.query(query,[idUser, idUser], (err, results) => {
                             if(err) reject(err);
+                            else if(results.length === 0){
+                                console.log(11111111);
+                                return resolve(false)
+                            }
                             else {
                                 console.log("kkkkkkkkkkkkkkkkkkk " + idUser);
                                 results.map((item) => {

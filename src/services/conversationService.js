@@ -7,10 +7,11 @@ async function handleFindUser(idAcc1) {
         const userChat = {};
         const conversationModel = new Conversation("", idAcc1);
         const userCheck = await conversationModel.findConversation(idAcc1);
-
+        console.log("userCheck " + userCheck);
         if (!userCheck) {
             userChat.errCode = 1;
             userChat.errMessage = 'No one is connected!';
+            // return userChat;
         } else {
             userChat.errCode = 0;
             userChat.chat = userCheck;
