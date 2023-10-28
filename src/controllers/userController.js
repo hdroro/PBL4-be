@@ -16,6 +16,7 @@ const handleLoging = async (req, res) => {
     }
 
     const userData = await userService.handleUserLogin(username, password);
+    req.session.idUser = userData.idUser;
 
     return res.status(200).json({
         errCode: userData.errCode,
@@ -36,8 +37,18 @@ const getMatching = async (req, res) => {
     }
 }
 
+const getInfoByID = async (req, res) => {
+    if (req.query.idUser) {
+        const userData = await userService.handleGetInfoByID(req.query.idUser);
+    
+        return res.status(200).json({ userData });
+    } else {
+        return res.status(400).json({ error: 'Người dùng không tồn tại' });
+    }
+}
 
 module.exports = {
     handleLoging: handleLoging,
-    getMatching: getMatching
+    getMatching: getMatching,
+    getInfoByID: getInfoByID
 }

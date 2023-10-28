@@ -7,7 +7,7 @@ class Account {
         this.username = username;
         this.password = password;
         this.isDelete = 0;
-        this.idRole = 1;
+        this.idRole = 0;
     }
 
     async checkUsername() {
@@ -164,18 +164,6 @@ class Account {
     }
 
 
-    async getAllAccount() {
-        return new Promise((resolve, reject) => {
-            const fetchQuery = `select * FROM user INNER JOIN inforcustomer ON idUser = idCustomer where isDelete = 0`;
-            db.query(fetchQuery, (err, results) => {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
-        })
-    }
-
     async deleteAccount(username) {
         return new Promise((resolve, reject) => {
             var query = `UPDATE user SET isDelete = 1 WHERE userName = ?`;
@@ -192,6 +180,20 @@ class Account {
         return new Promise((resolve, reject) => {
             var query = `select * from user where userName = ? and idRole = 0`;
             db.query(query, [username], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                if (results.length === 0) return reject(err);
+                return resolve(results);
+            });
+        })
+    }
+
+    async getCusByID(id){
+        console.log('id ' + id);
+        return new Promise((resolve, reject) => {
+            var query = `select * from user where idUser = ? and idRole = 0`;
+            db.query(query, [id], (err, results) => {
                 if (err) {
                     return reject(err);
                 }

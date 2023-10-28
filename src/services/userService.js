@@ -5,6 +5,7 @@ let handleUserLogin = (username, password) => {
         try {
             let userData = {};
             const user = new account(username, password);
+            const idUser = await user.getIdAccount(username);
             let userCheck = await user.checkUsername();
             if (userCheck) {
                 let passwordCheck = await user.checkPassword(password);
@@ -15,6 +16,7 @@ let handleUserLogin = (username, password) => {
 
                     delete user.password;
                     userData.user = user;
+                    userData.idUser = idUser;
                 }
                 else {
                     userData.errCode = 3;
@@ -52,10 +54,32 @@ let handleGetInfo = (username) => {
     })
 }
 
+let handleGetInfoByID = (idUser) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let userDataInfo = {};
+            const user = new account();
+
+            const userinfo = await user.getCusByID(idUser);
+
+            userDataInfo.errCode = 0;
+            userDataInfo.errMessage = 'OK';
+
+            delete userinfo.password;
+            userDataInfo.user = userinfo;
+
+            resolve(userDataInfo);
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
 
 
 
 module.exports = {
     handleUserLogin: handleUserLogin,
-    handleGetInfo: handleGetInfo
+    handleGetInfo: handleGetInfo,
+    handleGetInfoByID: handleGetInfoByID
 }
