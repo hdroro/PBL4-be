@@ -14,6 +14,7 @@ let initWebRoutes = (app) => {
     router.get('/api/user-load-message', messageController.getMessage);
     router.get('/api/user-list', messageController.getAccByidConversation);
     router.post('/api/save-message', messageController.postMessage);
+    router.post('/api/signup', userController.handleSignup);
 
     return app.use("/", router);
 }

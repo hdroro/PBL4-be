@@ -3,11 +3,15 @@ const bcrypt = require('bcrypt');
 
 
 class Account {
-    constructor(username, password) {
+    constructor(username, password, fullName, birth, gender, idZodiac) {
         this.username = username;
         this.password = password;
         this.isDelete = 0;
         this.idRole = 0;
+        this.fullName = fullName;
+        this.birth = birth;
+        this.gender = gender;
+        this.idZodiac = idZodiac;
     }
 
     async checkUsername() {
@@ -76,44 +80,6 @@ class Account {
         });
     }
 
-    async save() {
-        return new Promise((resolve, reject) => {
-            const checkQuery = `SELECT * FROM user WHERE userName = ?`;
-            db.query(checkQuery, [this.username], async (checkErr, checkResults) => {
-                if (checkErr) {
-                    return reject(checkErr);
-                }
-                if (checkResults.length > 0) {
-                    return reject(new Error('Tên tài khoản đã tồn tại'));
-                } else {
-                    const saltRounds = 10;
-                    const hashedPassword = await bcrypt.hash(this.password, saltRounds);
-                    var query = `INSERT INTO accounts (userName, passWord, isDelete, idRole) VALUES (?, ?, ?, ?)`;
-                    db.query(query, [this.username, hashedPassword, this.isDelete, this.idRole], (insertErr, insertResults) => {
-                        if (insertErr) {
-                            return reject(insertErr);
-                        }
-                        return resolve(insertResults.insertId);
-                    });
-                }
-            });
-        });
-    }
-
-
-
-    async match() {
-        return new Promise((resolve, reject) => {
-            const checkQuery = `SELECT name FROM user INNER JOIN inforcustomer ON idUser = idCustomer WHERE userName = ?`;
-            db.query(checkQuery, [this.username], (err, results) => {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results[0].name);
-            });
-        });
-    }
-
 
     async checkPassword(password) {
         try {
@@ -163,6 +129,31 @@ class Account {
         }
     }
 
+    async getAllAccount() {
+        return new Promise((resolve, reject) => {
+            const fetchQuery = `select * FROM user INNER JOIN inforcustomer ON idUser = idCustomer where isDelete = 0`;
+            db.query(fetchQuery, (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+        })
+    }
+
+
+    async addAccount(username, password, fullName, date, gender, idZodiac) {
+        return new Promise(async (resolve, reject) => {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const query = `insert into user(idRole, username, password, fullName, birth, gender, idZodiac, numberWarning, isDelete) values(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+            db.query(query, [0, username, hashedPassword, fullName, date, gender, idZodiac, 0, 0], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(true);
+            });
+        })
+    }
 
     async deleteAccount(username) {
         return new Promise((resolve, reject) => {
@@ -216,6 +207,6 @@ class Account {
         })
     }
 
-
+    
 }
 module.exports = Account;

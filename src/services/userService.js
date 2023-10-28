@@ -1,4 +1,5 @@
 const account = require('../models/account');
+const zodiac = require('../models/zodiac');
 
 let handleUserLogin = (username, password) => {
     return new Promise(async (resolve, reject) => {
@@ -75,11 +76,56 @@ let handleGetInfoByID = (idUser) => {
     })
 }
 
+let handleUserSignUp = (username, password, fullname, birth, gender) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let userDataInfo = {};
+            const user = new account(username);
+            let userCheck = await user.checkUsername(username);
+            if(!userCheck) {
+                let month = birth.substr(5, 2);
+                let date = birth.substr(8, 2);
+                if(date[0] == '0') {
+                    date = parseInt(date[1]);
+                } else {
+                    date = parseInt(date);
+                }
+                if(month[0] == '0') {
+                    month = parseInt(month[1]);
+                } else {
+                    month = parseInt(month);
+                }
+                let idZodiac = await new zodiac().getIdZodiac(date, month);
+                if(idZodiac) {
+                    let addUserCheck = await user.addAccount(username, password, fullname, birth, gender, idZodiac);
+                    if(addUserCheck) {
+                        userDataInfo.errCode = 0;
+                        userDataInfo.errMessage = 'Sign up successfully!';
+                    } else {
+                        userDataInfo.errCode = 1;
+                        userDataInfo.errMessage = 'Failed add account user!';
+                    }
+                } else {
+                    userDataInfo.errCode = 2;
+                    userDataInfo.errMessage = 'Can not find id zodiac!';
+                }
+                
+            } else {
+                userDataInfo.errCode = 3;
+                userDataInfo.errMessage = 'Username have already existed!';
+            }
 
+            resolve(userDataInfo);
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
 
 
 module.exports = {
     handleUserLogin: handleUserLogin,
     handleGetInfo: handleGetInfo,
-    handleGetInfoByID: handleGetInfoByID
+    handleGetInfoByID: handleGetInfoByID,
+    handleUserSignUp: handleUserSignUp,
 }
