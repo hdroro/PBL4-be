@@ -23,6 +23,18 @@ class Zodiac {
         })
     }
 
+    async getAvatarByID(idZodiac){
+        console.log("idZodiac " +idZodiac);
+        return new Promise((resolve, reject) => {
+            const query = `select srcImage from zodiac where idZodiac = ${idZodiac}`;
+            db.query(query, (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results[0].srcImage);
+            });
+        })
+    }
 }
 
 module.exports = Zodiac;

@@ -60,14 +60,21 @@ let handleGetInfoByID = (idUser) => {
         try {
             let userDataInfo = {};
             const user = new account();
+            const zodiac_ = new zodiac();
 
             const userinfo = await user.getCusByID(idUser);
+
+            console.log(userinfo);
+            console.log("userinfo.idZodiac " + userinfo[0].idZodiac);
+            const avatar = await zodiac_.getAvatarByID(userinfo[0].idZodiac);
 
             userDataInfo.errCode = 0;
             userDataInfo.errMessage = 'OK';
 
-            delete userinfo.password;
-            userDataInfo.user = userinfo;
+            delete userinfo[0].password;
+
+            userDataInfo.user = userinfo[0];
+            userDataInfo.user.avatar = avatar;
 
             resolve(userDataInfo);
         } catch (error) {

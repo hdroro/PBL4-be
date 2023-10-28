@@ -1,5 +1,6 @@
 const Conversation = require('../models/conversation');
 const Account = require('../models/account'); 
+const Zodiac = require('../models/zodiac'); 
 
 async function handleFindUser(idAcc1) {
     try {
@@ -17,6 +18,7 @@ async function handleFindUser(idAcc1) {
             userChat.chat = userCheck;
 
             const accountModel = new Account();
+            
 
             const infoUserPromises = userCheck.map(async (conversation) => {
                 const idAcc = idAcc1 === conversation.idAcc1 ? conversation.idAcc2 : conversation.idAcc1
@@ -24,17 +26,32 @@ async function handleFindUser(idAcc1) {
             });
 
             userChat.infoUser2 = await Promise.all(infoUserPromises);
+
+            const zodiacModel = new Zodiac();
+            const avatarPromises = userChat.infoUser2?.map(async(chat, index) =>{
+                const userInfo = userChat.infoUser2[index][0];
+                return await zodiacModel.getAvatarByID(userInfo.idZodiac)
+            });
+            
+            userChat.avatarData = await Promise.all(avatarPromises);
+            
         }
 
+        
         const chatsWithUserInfo = userChat.chat?.map((chat, index) => {
-            const userInfo = userChat.infoUser2[index][0]; 
-            const idSession = idAcc1;
-            return {
-                ...chat,
-                idSession,
-                userInfo
-            };
+          const userInfo = userChat.infoUser2[index][0];
+          const avatar = userChat.avatarData[index]; // Get the corresponding avatar data
+          
+          const idSession = idAcc1;
+        
+          return {
+            ...chat,
+            idSession,
+            avatar,
+            userInfo,
+          };
         });
+        
         return chatsWithUserInfo;
     } catch (e) {
         throw e;
