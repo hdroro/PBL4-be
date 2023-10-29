@@ -14,7 +14,7 @@ class Conversation {
             var query = `SELECT *
                         FROM conversation AS c
                         INNER JOIN (
-                            SELECT idConversation, MAX(timeSend) AS maxTimeSend
+                            SELECT idConversation, MAX(timeSend) AS maxTimeSend, MAX(idMessage) as maxIDmessage
                             FROM message
                             GROUP BY idConversation
                         ) AS maxMessages
@@ -28,7 +28,7 @@ class Conversation {
                     }
                     else {
                         query += ` WHERE (c.idAcc1 = ? OR c.idAcc2 = ?)
-                                        AND m.timeSend = maxMessages.maxTimeSend
+                                        AND m.timeSend = maxMessages.maxTimeSend AND m.idMessage = maxMessages.maxIDmessage
                                         ORDER BY maxMessages.maxTimeSend DESC`;
                         db.query(query,[idUser, idUser], (err, results) => {
                             if(err) reject(err);
