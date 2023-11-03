@@ -45,7 +45,7 @@ app.use((req, res, next) => {
 initWebRoutes(app);
 
 
-let port = process.env.PORT || 8081;  
+let port = process.env.PORT || 8080;  
 
 app.listen(port, () => {
     console.log("Backend Nodejs is running on the port: " + port);

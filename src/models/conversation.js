@@ -9,7 +9,6 @@ class Conversation {
     }
 
     async findConversation(idUser) {
-        console.log("huhu " + idUser);
         return new Promise((resolve, reject) => {
             var query = `SELECT *
                         FROM conversation AS c
@@ -70,6 +69,42 @@ class Conversation {
         })
     }
 
+    async blockConversation(idConversation){
+        return new Promise((resolve, reject) => {
+            var query = `UPDATE conversation SET isBlocked = ${true} where idConversation =${idConversation}`;
+            db.query(query, (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+                
+            });
+        })
+    }
+
+    async deleteConversation(idConversation){
+        return new Promise((resolve, reject) => {
+            var query = `UPDATE conversation SET isDelete = ${true} where idConversation =${idConversation}`;
+            db.query(query, (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+                
+            });
+        })
+    }
+
+    async getConversationByID(idConversation){
+        return new Promise((resolve, reject) => {
+            var query = `select * from conversation where idConversation =${idConversation}`;
+                db.query(query, (err, results) => {
+                    return resolve(results);
+                });
+        })
+    }
+
+    
     async findUserChat(){
         return new Promise((resolve, reject) => {
             var query = `SELECT * FROM conversation WHERE idAcc2 = ?`;

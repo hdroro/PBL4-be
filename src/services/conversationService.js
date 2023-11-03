@@ -79,7 +79,55 @@ async function handleCreateConversation(idAcc1, idAcc2, idConversation) {
     }
 }
 
+async function getConversationByID(idConversation) {
+    try {
+        const conversationData = {};
+        const conversationModel = new Conversation();
+        const conversationCheck = await conversationModel.getConversationByID(idConversation);
+        
+        conversationData.errCode = 0;
+        conversationData.errMessage = 'OK';
+        conversationData.newConversation = conversationCheck;
+        return conversationData;
+    } catch (e) {
+        throw e;
+    }
+}
+
+async function blockConversation(idConversation) {
+    try {
+        const conversationData = {};
+        const conversationModel = new Conversation();
+        const conversationCheck = await conversationModel.blockConversation(idConversation);
+        
+        conversationData.errCode = 0;
+        conversationData.errMessage = 'OK';
+        conversationData.newConversation = conversationCheck;
+        return conversationData;
+    } catch (e) {
+        throw e;
+    }
+}
+
+async function deleteConversation(idConversation) {
+    try {
+        const conversationData = {};
+        const conversationModel = new Conversation();
+        const conversationCheck = await conversationModel.deleteConversation(idConversation);
+        
+        conversationData.errCode = 0;
+        conversationData.errMessage = 'OK';
+        conversationData.newConversation = "Xóa thành công";
+        return conversationData;
+    } catch (e) {
+        throw e;
+    }
+}
+
 module.exports = {
     handleCreateConversation,
-    handleFindUser
+    handleFindUser,
+    blockConversation,
+    deleteConversation,
+    getConversationByID
 };

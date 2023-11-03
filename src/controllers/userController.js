@@ -26,6 +26,18 @@ const handleLoging = async (req, res) => {
     });
 }
 
+const handleLogout = async (req, res)=>{
+    console.log("req.session " + req.session);
+    req.session.destroy((err) => {
+        if (err) {
+          console.error('Error destroying session:', err);
+          res.status(500).send('Error logging out');
+        } else {
+          res.status(200).send('Logout successful');
+        }
+      });
+}
+
 const getMatching = async (req, res) => {
     if (req.session.user_session) {
         const user = req.session.user_session; 
@@ -66,6 +78,7 @@ const handleSignup = async (req, res) => {
 }
 module.exports = {
     handleLoging: handleLoging,
+    handleLogout: handleLogout,
     getMatching: getMatching,
     getInfoByID: getInfoByID,
     handleSignup: handleSignup,
