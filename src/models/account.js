@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 
 class Account {
-    constructor(username, password, fullName, birth, gender, idZodiac) {
+    constructor(username, password, fullName, birth, gender, bio, idZodiac) {
         this.username = username;
         this.password = password;
         this.isDelete = 0;
@@ -11,6 +11,7 @@ class Account {
         this.fullName = fullName;
         this.birth = birth;
         this.gender = gender;
+        this.bio = bio;
         this.idZodiac = idZodiac;
     }
 
@@ -127,18 +128,6 @@ class Account {
         } catch (error) {
             throw error;
         }
-    }
-
-    async getAllAccount() {
-        return new Promise((resolve, reject) => {
-            const fetchQuery = `select * FROM user INNER JOIN inforcustomer ON idUser = idCustomer where isDelete = 0`;
-            db.query(fetchQuery, (err, results) => {
-                if (err) {
-                    return reject(err);
-                }
-                return resolve(results);
-            });
-        })
     }
 
 

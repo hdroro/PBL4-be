@@ -2,6 +2,7 @@ import express from "express";
 import userController from '../controllers/userController';
 import conversationController from '../controllers/conversationController';
 import messageController from '../controllers/messageController';
+import postController from '../controllers/postController';
 
 let router = express.Router();
 
@@ -19,6 +20,9 @@ let initWebRoutes = (app) => {
     router.post('/api/signup', userController.handleSignup);
     router.put('/api/block-conversation', conversationController.putBlockConversation);
     router.put('/api/delete-conversation', conversationController.deleteConversation);
+
+    router.get('/api/get-post', postController.getPostByID);
+    
 
     return app.use("/", router);
 }
