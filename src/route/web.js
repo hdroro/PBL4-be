@@ -22,6 +22,7 @@ let initWebRoutes = (app) => {
     router.put('/api/delete-conversation', conversationController.deleteConversation);
 
     router.get('/api/get-post', postController.getPostByID);
+    router.get('/api/get-user-by-username', userController.getUserByUsername);
     
 
     return app.use("/", router);
