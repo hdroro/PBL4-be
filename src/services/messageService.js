@@ -73,14 +73,27 @@ async function handleGetAcc(idConversation){
 async function handleCreateConversation( direct, messageText, timeSend, idConversation) {
     try {
         const messageData = {};
-        const messageModel = new Message("", direct, messageText, timeSend, idConversation);
+        const messageModel = new Message("", direct, messageText, timeSend, idConversation, 0);
         const message = await messageModel.saveMessage();
         messageData.errCode = 0;
         messageData.errMessage = 'OK';
         messageData.chat = message;
-        
         return messageData;
     } catch (e) {
+        throw e;
+    }
+}
+
+async function handleCreateConversationOfFile(direct, fileName, timeSend, idConversation){
+    try{
+        const messageData = {};
+        const messageModel = new Message("",direct,fileName,timeSend, idConversation, 1);
+        const message = await messageModel.saveMessage();
+        messageData.errCode = 0;
+        messageData.errMessage = 'OK';
+        messageData.chat = await messageModel.getMessage(message);
+        return messageData;
+    }catch (e) {
         throw e;
     }
 }
@@ -89,5 +102,6 @@ async function handleCreateConversation( direct, messageText, timeSend, idConver
 module.exports = {
     handleCreateConversation: handleCreateConversation,
     handleLoadMessage: handleLoadMessage,
-    handleGetAcc: handleGetAcc
+    handleGetAcc: handleGetAcc,
+    handleCreateConversationOfFile: handleCreateConversationOfFile
 }

@@ -17,13 +17,17 @@ let initWebRoutes = (app) => {
     router.get('/api/get-conversation', conversationController.getConversationByID);
     router.get('/api/user-list', messageController.getAccByidConversation);
     router.post('/api/save-message', messageController.postMessage);
+    router.post('/api/save-file', messageController.postFile);
+    router.get('/api/get-file', messageController.getFile)
     router.post('/api/signup', userController.handleSignup);
     router.put('/api/block-conversation', conversationController.putBlockConversation);
     router.put('/api/delete-conversation', conversationController.deleteConversation);
 
-    router.get('/api/get-post', postController.getPostByID);
-    router.get('/api/get-user-by-username', userController.getUserByUsername);
-    
+    router.get('/api/get-post', postController.getPostByIDAccPost);
+    router.post('/api/create-post', postController.createPostByUser);
+    router.put('/api/update-post', postController.updatePost);
+    router.delete('/api/delete-post', postController.deletePostById);
+
 
     return app.use("/", router);
 }
