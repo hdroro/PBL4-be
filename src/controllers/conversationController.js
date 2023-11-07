@@ -29,6 +29,15 @@ const deleteConversation = async(req, res) => {
     }
 }
 
+const updateBlockStatusConversation = async(req, res) => {
+    if(req.body.idConversation){
+        const conversationData = await conversationService.updateBlockStatusConversation(req.body.idConversation);
+        return res.status(200).json({ conversationData });
+    } else {
+        return res.status(400).json({ error: 'Không tồn tại idConversation' });
+    }
+}
+
 const getConversationByID = async(req, res) => {
     console.log("req.body.idConversation "  + req.query.idConversation);
     if(req.query.idConversation){
@@ -44,5 +53,6 @@ module.exports = {
     getUserChat: getUserChat,
     putBlockConversation: putBlockConversation,
     deleteConversation: deleteConversation,
+    updateBlockStatusConversation: updateBlockStatusConversation,
     getConversationByID: getConversationByID
 }

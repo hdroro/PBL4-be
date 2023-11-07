@@ -113,11 +113,26 @@ async function deleteConversation(idConversation) {
     try {
         const conversationData = {};
         const conversationModel = new Conversation();
-        const conversationCheck = await conversationModel.deleteConversation(idConversation);
+        await conversationModel.deleteConversation(idConversation);
         
         conversationData.errCode = 0;
         conversationData.errMessage = 'OK';
         conversationData.newConversation = "Xóa thành công";
+        return conversationData;
+    } catch (e) {
+        throw e;
+    }
+}
+
+async function updateBlockStatusConversation(idConversation) {
+    try {
+        const conversationData = {};
+        const conversationModel = new Conversation();
+        await conversationModel.updateBlockStatusConversation(idConversation);
+        
+        conversationData.errCode = 0;
+        conversationData.errMessage = 'OK';
+        conversationData.newConversation = "Cập nhật thành công";
         return conversationData;
     } catch (e) {
         throw e;
@@ -129,5 +144,6 @@ module.exports = {
     handleFindUser,
     blockConversation,
     deleteConversation,
+    updateBlockStatusConversation,
     getConversationByID
 };
