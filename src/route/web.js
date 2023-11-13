@@ -4,6 +4,7 @@ import conversationController from '../controllers/conversationController';
 import messageController from '../controllers/messageController';
 import postController from '../controllers/postController';
 import blockController from '../controllers/blockController';
+import imageController from '../controllers/imageController';
 
 let router = express.Router();
 
@@ -28,15 +29,23 @@ let initWebRoutes = (app) => {
     router.get('/api/user-load-message', messageController.getMessage);
     router.get('/api/user-list', messageController.getAccByidConversation);
     router.post('/api/save-message', messageController.postMessage);
+    router.post('/api/save-file', messageController.postFile);
+    router.get('/api/get-file', messageController.getFile);
     
     //posts
-    router.get('/api/get-post', postController.getPostByID);
+    router.get('/api/get-post', postController.getPostByIDAccPost);
+    router.post('/api/create-post', postController.createPostByUser);
+    router.put('/api/update-post', postController.updatePost);
+    router.delete('/api/delete-post', postController.deletePostById);
+
 
     //block
     router.post('/api/block-conversation', blockController.postBlockInfo);
     router.delete('/api/delete-block-conversation', blockController.deleteBlockInfo);
     router.get('/api/get-block-conversation', blockController.getBlockInfo);
     
+    //image
+    router.get('/api/get-image', imageController.getImageInfo);
 
     return app.use("/", router);
 }
