@@ -53,6 +53,17 @@ const getMatching = async (req, res) => {
     }
 }
 
+const getUserByUsername = async (req, res) => {
+    if (req.query.nickname) {
+        const user = req.query.nickname; 
+        const userData = await userService.handleGetInfo(user);
+    
+        return res.status(200).json({ userData });
+    } else {
+        return res.status(400).json({ error: 'Người dùng không tồn tại' });
+    }
+}
+
 const getInfoByID = async (req, res) => {
     if (req.query.idUser) {
         const userData = await userService.handleGetInfoByID(req.query.idUser);
@@ -174,6 +185,7 @@ module.exports = {
     handleLoging: handleLoging,
     handleLogout: handleLogout,
     getMatching: getMatching,
+    getUserByUsername: getUserByUsername,
     getInfoByID: getInfoByID,
     handleSignup: handleSignup,
     handleEditProfile: handleEditProfile,

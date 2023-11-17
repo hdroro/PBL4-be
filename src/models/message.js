@@ -1,12 +1,13 @@
 const db = require('../config/conectDB');
 
 class Conversation {
-    constructor(idMessage, direct, messageText, timeSend, idConversation) {
+    constructor(idMessage, direct, messageText, timeSend, idConversation, isImage) {
         this.idMessage = idMessage;
         this.direct = direct;
         this.messageText = messageText;
         this.timeSend = timeSend;
         this.idConversation = idConversation;
+        this.isImage = isImage;
     }
 
     async loadMessages(idUser) {
@@ -70,14 +71,26 @@ class Conversation {
 
     async saveMessage(){
         return new Promise((resolve, reject) => {
-                var query = `INSERT INTO message (direct, messageText, timeSend, idConversation) VALUES (?, ?, ?, ?)`;
-                db.query(query, [this.direct, this.messageText, this.timeSend, this.idConversation], (insertErr, insertResults) => {
+                var query = `INSERT INTO message (direct, messageText, timeSend, idConversation, isImage) VALUES (?, ?, ?, ?, ?)`;
+                db.query(query, [this.direct, this.messageText, this.timeSend, this.idConversation, this.isImage], (insertErr, insertResults) => {
                     if (insertErr) {
                         return reject(insertErr);
                     }
                     return resolve(insertResults.insertId);
                 });
         })
+    }
+
+    async getMessage(id){
+        return new Promise((resolve, reject) => {
+            var query = `select * from message where idMessage = ?`;
+            db.query(query, [id], (findErr, findResults) => {
+                if (findErr) {
+                    return reject(findErr);
+                }
+                return resolve(findResults[0].messageText);
+            });
+    })
     }
 
 }

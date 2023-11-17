@@ -95,6 +95,19 @@ class Conversation {
         })
     }
 
+    async updateBlockStatusConversation(idConversation){
+        return new Promise((resolve, reject) => {
+            var query = `UPDATE conversation SET isBlocked = ${false} where idConversation =${idConversation}`;
+            db.query(query, (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+                
+            });
+        })
+    }
+
     async getConversationByID(idConversation){
         return new Promise((resolve, reject) => {
             var query = `select * from conversation where idConversation =${idConversation}`;
