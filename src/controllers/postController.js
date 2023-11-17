@@ -45,11 +45,25 @@ const updatePost = async(req,res) =>{
 }
 const deletePostById = async(req,res) =>{
     try{
-        if (req.body.idAccPost) {
-            const idUser = req.body.idAccPost;
-            const message = await postService.deletePostId(idUser,req.body.idPost);
+        if (req.query.idAccPost) {
+            const idUser = req.query.idAccPost;
+            const message = await postService.deletePostId(idUser, req.query.idPost);
             console.log(message);
             return res.status(200).json({ message });
+        } else {
+            return res.status(400).json({ error: 'Không tồn tại ID này' });
+        }
+    }
+    catch(err){    
+    }
+}
+
+const getInfoPost = async(req,res) =>{
+    try{
+        if (req.query.idAccPost && req.query.idPost) {
+            const idUser = req.query.idAccPost;
+            const post = await postService.getInfoPost(idUser, req.query.idPost);
+            return res.status(200).json({ post });
         } else {
             return res.status(400).json({ error: 'Không tồn tại ID này' });
         }
@@ -63,4 +77,5 @@ module.exports = {
     createPostByUser,
     updatePost,
     deletePostById,
+    getInfoPost
 }

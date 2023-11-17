@@ -1,6 +1,7 @@
 const Conversation = require('../models/conversation');
 const Account = require('../models/account'); 
 const Zodiac = require('../models/zodiac'); 
+const Delete = require('../models/delete'); 
 
 async function handleFindUser(idAcc1) {
     try {
@@ -18,14 +19,20 @@ async function handleFindUser(idAcc1) {
             userChat.chat = userCheck;
 
             const accountModel = new Account();
-            
+            const deletetModel = new Delete();
 
             const infoUserPromises = userCheck.map(async (conversation) => {
-                const idAcc = idAcc1 === conversation.idAcc1 ? conversation.idAcc2 : conversation.idAcc1
+                const idAcc = idAcc1 === conversation.idAcc1 ? conversation.idAcc2 : conversation.idAcc1;
                 return await accountModel.getCusByID(idAcc);
             });
 
             userChat.infoUser2 = await Promise.all(infoUserPromises);
+
+            const infODeletePromises = userCheck.map(async (conversation) => {
+                return await deletetModel.getInfoDelete(conversation.idConversation);
+            });
+
+            userChat.infoUserDelete = await Promise.all(infODeletePromises);
 
             const zodiacModel = new Zodiac();
             const avatarPromises = userChat.infoUser2?.map(async(chat, index) =>{
@@ -40,6 +47,7 @@ async function handleFindUser(idAcc1) {
         
         const chatsWithUserInfo = userChat.chat?.map((chat, index) => {
           const userInfo = userChat.infoUser2[index][0];
+          const infoUserDelete = userChat.infoUserDelete[index];
           const avatar = userChat.avatarData[index]; // Get the corresponding avatar data
           
           const idSession = idAcc1;
@@ -49,6 +57,7 @@ async function handleFindUser(idAcc1) {
             idSession,
             avatar,
             userInfo,
+            infoUserDelete,
           };
         });
         
@@ -113,12 +122,22 @@ async function deleteConversation(idConversation) {
     try {
         const conversationData = {};
         const conversationModel = new Conversation();
-        await conversationModel.deleteConversation(idConversation);
         
-        conversationData.errCode = 0;
-        conversationData.errMessage = 'OK';
-        conversationData.newConversation = "Xóa thành công";
-        return conversationData;
+        const deleteModel = new Delete();
+        const countDelete = await deleteModel.getInfoDelete(idConversation);
+        console.log("countDelete.length ", countDelete.length);
+        if(countDelete.length == 2){
+            await conversationModel.deleteConversation(idConversation);
+            conversationData.errCode = 0;
+            conversationData.errMessage = 'OK';
+            conversationData.newConversation = "Xóa thành công";
+            return conversationData;
+        }
+        else{
+            conversationData.errCode = 0;
+            conversationData.errMessage = 'OK';
+            conversationData.newConversation = "Xóa 1 phía thành công";
+        }
     } catch (e) {
         throw e;
     }

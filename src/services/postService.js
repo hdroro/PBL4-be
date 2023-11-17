@@ -42,6 +42,19 @@ async function deletePostId(idAccPost, idPost){
     }
 }
 
+async function getInfoPost(idAccPost, idPost){
+    try{
+        if (!idPost) return {errCode:4, errMessage: "Các tham số truyền vào thiếu"};
+        const postModel = new Post();
+        const postInfo = await postModel.getPostByID(idAccPost,idPost);
+        return postInfo;
+    }
+    catch(err){
+        return err;
+    }
+}
+
+
 async function updatePostById(idAccPost, idPost, content){
     try{
         if (!idPost || !content) return {errCode:4, errMessage: "Các tham số truyền vào thiếu"};
@@ -62,5 +75,6 @@ module.exports = {
     GetPostByIdUser,
     createPostByUser,
     deletePostId,
+    getInfoPost,
     updatePostById
 };

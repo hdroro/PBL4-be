@@ -13,7 +13,7 @@ class Post {
 
     async getPostByIDAccPost(idAccPost) {
         return new Promise((resolve, reject) => {
-            const query = `select * from post where idAccPost = ${idAccPost}`;
+            const query = `select * from post where idAccPost = ${idAccPost} and isDelete = 0 order by timePost DESC`;
             db.query(query, (err, results) => {
                 if (err) {
                     return reject(err);
@@ -23,6 +23,7 @@ class Post {
         })
     }
     async getPostByID(idAccPost,idPost){
+        console.log("idAccPost " + idAccPost + "idPost " + idPost);
         return new Promise((resolve,reject)=>{
             const query = `select * from post where idAccPost = ${idAccPost} and idPost = ${idPost} and isDelete = 0`;
             db.query(query, (err,results)=>{

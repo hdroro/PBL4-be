@@ -12,15 +12,32 @@ const postDeleteInfo = async (req, res) => {
 
 const getDeleteInfo = async (req, res) => {
     if (req.query.idConversation) {
-        const blockDataInfo = await blockService.handleGetInfoBlock(req.query.idConversation );
-        console.log(blockDataInfo);
-        return res.status(200).json({ blockDataInfo });
+        const deleteDataInfo = await deleteService.handleGetInfoDelete(req.query.idConversation );
+        console.log(deleteDataInfo);
+        return res.status(200).json({ deleteDataInfo });
     } else {
         return res.status(400).json({ error: 'Error' });
     }
 }
 
+const getIdConversationInDeleted = async (req, res) => {
+    const deleteDataInfo = await deleteService.handleGetIdConversationInDeleted();
+    return res.status(200).json({ deleteDataInfo });
+}
+
+const deleteInfoDelete = async (req, res) => {
+    if (req.query.idDelete && req.query.idDeleted) {
+        const deleteDataInfo = await deleteService.handleDeleteInfoDeleted(req.query.idDelete, req.query.idDeleted);
+        return res.status(200).json({ deleteDataInfo });
+    } else {
+        return res.status(400).json({ error: 'Error' });
+    }
+    
+}
+
 module.exports = {
     postDeleteInfo,
     getDeleteInfo,
+    getIdConversationInDeleted,
+    deleteInfoDelete
 }

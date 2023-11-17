@@ -4,6 +4,7 @@ import conversationController from '../controllers/conversationController';
 import messageController from '../controllers/messageController';
 import postController from '../controllers/postController';
 import blockController from '../controllers/blockController';
+import deleteController from '../controllers/deleteController';
 import imageController from '../controllers/imageController';
 
 let router = express.Router();
@@ -34,6 +35,7 @@ let initWebRoutes = (app) => {
     
     //posts
     router.get('/api/get-post', postController.getPostByIDAccPost);
+    router.get('/api/get-info-detail-post', postController.getInfoPost);
     router.post('/api/create-post', postController.createPostByUser);
     router.put('/api/update-post', postController.updatePost);
     router.delete('/api/delete-post', postController.deletePostById);
@@ -43,6 +45,13 @@ let initWebRoutes = (app) => {
     router.post('/api/block-conversation', blockController.postBlockInfo);
     router.delete('/api/delete-block-conversation', blockController.deleteBlockInfo);
     router.get('/api/get-block-conversation', blockController.getBlockInfo);
+
+    //delete
+    router.post('/api/delete-conversation', deleteController.postDeleteInfo);
+    router.get('/api/get-delete-conversation', deleteController.getDeleteInfo);
+    router.get('/api/get-id-conversation', deleteController.getIdConversationInDeleted);
+    router.delete('/api/delete-info-deleted', deleteController.deleteInfoDelete);
+
     
     //image
     router.get('/api/get-image', imageController.getImageInfo);
