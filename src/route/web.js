@@ -18,6 +18,9 @@ let initWebRoutes = (app) => {
     router.get('/api/get-user', userController.getInfoByID);
     router.post('/api/signup', userController.handleSignup);
     router.get('/api/get-user-by-username', userController.getUserByUsername);
+    router.post('/api/setting/editprofile', userController.handleEditProfile);
+    router.get('/api/setting/editprofile', userController.getProfileSetting);
+    router.post('/api/setting/changepassword', userController.handleChangePassword);
 
     //conversation
     router.get('/api/user-chat', conversationController.getUserChat);
@@ -25,6 +28,7 @@ let initWebRoutes = (app) => {
     router.put('/api/block-conversation', conversationController.putBlockConversation);
     router.put('/api/delete-conversation', conversationController.deleteConversation);
     router.put('/api/update-block-conversation', conversationController.updateBlockStatusConversation);
+    router.post('/api/create-conversation', conversationController.createConversation);
 
     //message
     router.get('/api/user-load-message', messageController.getMessage);
@@ -55,6 +59,10 @@ let initWebRoutes = (app) => {
     
     //image
     router.get('/api/get-image', imageController.getImageInfo);
+
+    // friend-relation
+    router.get('/api/check-friend-relation', userController.handleCheckFriendRelation);
+    router.post('/api/add-friend-relation', userController.handleAddFriendRelation);
 
     return app.use("/", router);
 }
