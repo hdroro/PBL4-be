@@ -58,20 +58,20 @@ async function handleFindUser(idAcc1) {
     }
 }
 
-async function handleCreateConversation(idAcc1, idAcc2, idConversation) {
+async function handleCreateConversation(idAcc1, idAcc2) {
     try {
         const conversationData = {};
-        const conversationModel = new Conversation(idAcc1, idAcc2, idConversation);
-        const conversationCheck = await conversationModel.findConversation();
+        const conversationModel = new Conversation("", idAcc1, idAcc2);
+        const conversationCheck = await conversationModel.checkExistedConversation();
         
         if (!conversationCheck) {
-            const chat = await conversationModel.saveConversation();
+            const idConversation = await conversationModel.saveConversation();
             conversationData.errCode = 0;
             conversationData.errMessage = 'OK';
-            conversationData.chat = chat;
+            conversationData.idConversation = idConversation;
         } else {
             conversationData.errCode = 1;
-            conversationData.chat = conversationCheck;
+            conversationData.errMessage = 'Conversation da ton tai!';
         }
         return conversationData;
     } catch (e) {

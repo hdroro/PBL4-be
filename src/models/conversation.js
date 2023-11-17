@@ -59,8 +59,8 @@ class Conversation {
 
     async saveConversation(){
         return new Promise((resolve, reject) => {
-                var query = `INSERT INTO conversation ( idAcc1, idAcc2, isBlocked) VALUES (?, ?, ?)`;
-                db.query(query, [this.idAcc1, this.idAcc2, 0], (insertErr, insertResults) => {
+                var query = `INSERT INTO conversation ( idAcc1, idAcc2, isBlocked, isDelete) VALUES (?, ?, ?, ?)`;
+                db.query(query, [this.idAcc1, this.idAcc2, 0, 0], (insertErr, insertResults) => {
                     if (insertErr) {
                         return reject(insertErr);
                     }
@@ -118,6 +118,23 @@ class Conversation {
                 })
             } catch (error) {
                 console.log(err);
+            }
+        })
+    }
+
+    async checkExistedConversation() {
+        return new Promise((resolve, reject) => {
+            var query = `SELECT * FROM conversation WHERE (idAcc1 = ? and idAcc2 = ?) or (idAcc1 = ? and idAcc2 = ?)`;
+            try {
+                db.query(query, [this.idAcc1, this.idAcc2, this.idAcc2, this.idAcc1], (err, results) => {
+                    if(err) reject(err);
+                    else if(results.length === 0){
+                        return resolve(false);
+                    }
+                    else return resolve(true);
+                })
+            } catch (error) {
+                console.log(error);
             }
         })
     }

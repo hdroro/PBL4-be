@@ -113,20 +113,20 @@ class Account {
     }
 
     async updatePassword(newPassword) {
-        try {
+        // try {
             const hashedPassword = await bcrypt.hash(newPassword, 10);
             const updateQuery = 'UPDATE user SET passWord = ? WHERE userName = ?';
-            await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 db.query(updateQuery, [hashedPassword, this.username], (err, results) => {
                     if (err) {
                         return reject(err);
                     }
-                    resolve(results);
+                    resolve(true);
                 });
             });
-        } catch (error) {
-            throw error;
-        }
+        // } catch (error) {
+        //     throw error;
+        // }
     }
 
     async getAllAccount() {
@@ -147,6 +147,18 @@ class Account {
             const hashedPassword = await bcrypt.hash(password, 10);
             const query = `insert into user(idRole, username, password, fullName, birth, gender, idZodiac, numberWarning, isDelete) values(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
             db.query(query, [0, username, hashedPassword, fullName, date, gender, idZodiac, 0, 0], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(true);
+            });
+        })
+    }
+
+    async editAccount(id, username, name, bio, birthday, gender, idZodiac) {
+        return new Promise(async (resolve, reject) => {
+            const query = `update user set username = ?, fullName = ?, bio = ?, birth =?, gender = ?, idZodiac = ? where idUser = ? and idRole = 0`;
+            db.query(query, [username, name, bio, birthday, gender, idZodiac, id], (err, results) => {
                 if (err) {
                     return reject(err);
                 }
