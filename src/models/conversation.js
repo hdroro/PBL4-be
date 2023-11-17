@@ -32,20 +32,18 @@ class Conversation {
                         db.query(query,[idUser, idUser], (err, results) => {
                             if(err) reject(err);
                             else if(results.length === 0){
-                                console.log(11111111);
                                 return resolve(false)
                             }
                             else {
-                                console.log("kkkkkkkkkkkkkkkkkkk " + idUser);
+                                // console.log("kkkkkkkkkkkkkkkkkkk " + idUser);
                                 results.map((item) => {
-                                    console.log("item.idAcc2 " + item.idAcc2);
+                                    // console.log("item.idAcc2 " + item.idAcc2);
                                     if(item.idAcc2 == idUser) {
-                                        console.log("kkkkkkkk");
                                         item.direct === 0 ? item.direct = 1 : item.direct = 0;
                                     }
                                 })
         
-                                console.log("results " + results);
+                                // console.log("results " + results);
                                 return resolve(results);
                             }
                         })

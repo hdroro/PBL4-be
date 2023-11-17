@@ -5,11 +5,9 @@ const Delete = require('../models/delete');
 
 async function handleFindUser(idAcc1) {
     try {
-        console.log("idAcc1 " + idAcc1);
         const userChat = {};
         const conversationModel = new Conversation("", idAcc1);
         const userCheck = await conversationModel.findConversation(idAcc1);
-        console.log("userCheck " + userCheck);
         if (!userCheck) {
             userChat.errCode = 1;
             userChat.errMessage = 'No one is connected!';
@@ -48,7 +46,7 @@ async function handleFindUser(idAcc1) {
         const chatsWithUserInfo = userChat.chat?.map((chat, index) => {
           const userInfo = userChat.infoUser2[index][0];
           const infoUserDelete = userChat.infoUserDelete[index];
-          const avatar = userChat.avatarData[index]; // Get the corresponding avatar data
+          const avatar = userChat.avatarData[index]; 
           
           const idSession = idAcc1;
         
