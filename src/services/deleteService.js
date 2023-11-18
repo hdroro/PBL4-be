@@ -1,11 +1,27 @@
 const delete_ = require('../models/delete');
 
-let handleAddInfoDelete = (idDelete, idDeleted, idConversation) => {
+let handleAddInfoDelete = (idDelete, idDeleted, idConversation, deleteAtId) => {
     return new Promise(async (resolve, reject) => {
         try {
             const deleteData = {};
             const deleter = new delete_();
-            const dataDeleteInfo = await deleter.addInfoDelete(idDelete, idDeleted, idConversation);
+            const dataDeleteInfo = await deleter.addInfoDelete(idDelete, idDeleted, idConversation, deleteAtId);
+            deleteData.errCode = 0;
+            deleteData.errMessage = 'OK';
+            deleteData.statusDelete = dataDeleteInfo;
+            resolve(deleteData)
+        } catch (e) {
+            reject(e);
+        }
+    })
+}
+
+let handleUpdateInfoDelete = (idDelete, idDeleted, deleteAtId) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const deleteData = {};
+            const deleter = new delete_();
+            const dataDeleteInfo = await deleter.updateIdDeleteAt(idDelete, idDeleted, deleteAtId);
             deleteData.errCode = 0;
             deleteData.errMessage = 'OK';
             deleteData.statusDelete = dataDeleteInfo;
@@ -66,6 +82,7 @@ let handleDeleteInfoDeleted = (idDelete, idDeleted) => {
 
 module.exports = {
     handleAddInfoDelete,
+    handleUpdateInfoDelete,
     handleGetInfoDelete,
     handleGetIdConversationInDeleted,
     handleDeleteInfoDeleted

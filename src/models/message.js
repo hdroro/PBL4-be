@@ -31,7 +31,6 @@ class Conversation {
                         const mappedResults = results.map(item => {
                             console.log("idAcc2 " + item.idAcc2);
                             if (item.idAcc2 == idUser && item.direct === 0) {
-                                console.log("olaaaaaaaaaaaa");
                                 item.direct = 0;
                             } else if(item.idAcc2 == idUser && item.direct === 1){
                                 item.direct = 1;
@@ -44,7 +43,6 @@ class Conversation {
                             }
                             return item;
                         });
-                        console.log("chillll");
     
                         resolve(mappedResults);
                     }

@@ -55,8 +55,9 @@ let initWebRoutes = (app) => {
     router.get('/api/get-delete-conversation', deleteController.getDeleteInfo);
     router.get('/api/get-id-conversation', deleteController.getIdConversationInDeleted);
     router.delete('/api/delete-info-deleted', deleteController.deleteInfoDelete);
+    router.put('/api/update-delete-conversation', deleteController.putDeleteInfo);
 
-    
+   
     //image
     router.get('/api/get-image', imageController.getImageInfo);
 

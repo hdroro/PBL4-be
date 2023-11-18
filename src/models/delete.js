@@ -8,6 +8,7 @@ class Delete {
     }
 
     async checkExist(idDelete, idDeleted){
+        console.log("checkkkk");
         return new Promise((resolve, reject) => {
             const query = `select * from deleted where idDelete=${idDelete} and idDeleted = ${idDeleted}`;
             db.query(query, (err, results) => {
@@ -19,10 +20,26 @@ class Delete {
         })
     }
 
-    async addInfoDelete(idDelete, idDeleted, idConversation) {
-        if(await this.checkExist(idDelete, idDeleted) > 0) return;
+    async addInfoDelete(idDelete, idDeleted, idConversation, deleteAtId) {
+        if(await this.checkExist(idDelete, idDeleted) > 0) {
+            console.log("hahaha");
+            await this.updateIdDeleteAt(idDelete, idDeleted, deleteAtId);
+        }
         else return new Promise((resolve, reject) => {
-            const query = `INSERT INTO deleted (idDelete, idDeleted, idConversation) VALUES (${idDelete}, ${idDeleted}, ${idConversation})`;
+            const query = `INSERT INTO deleted (idDelete, idDeleted, idConversation, deleteAtId) VALUES (${idDelete}, ${idDeleted}, ${idConversation}, ${deleteAtId})`;
+            db.query(query, (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+        })
+    }
+
+    async updateIdDeleteAt(idDelete, idDeleted, deleteAtId){
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE deleted SET deleteAtId = ${deleteAtId} where idDelete = ${idDelete} and idDeleted = ${idDeleted}`;
+            console.log(query);
             db.query(query, (err, results) => {
                 if (err) {
                     return reject(err);
@@ -36,7 +53,7 @@ class Delete {
 
     async getInfoDelete(idConversation) {
         return new Promise((resolve, reject) => {
-            const query = `select idDelete, idDeleted from deleted where idConversation = ${idConversation}`;
+            const query = `select idDelete, idDeleted, deleteAtId from deleted where idConversation = ${idConversation}`;
             db.query(query, (err, results) => {
                 if (err) {
                     return reject(err);
