@@ -208,6 +208,36 @@ class Account {
         })
     }
 
+    async getUserBySearch(idAcc, userSearch){
+        return new Promise((resolve,reject)=>{
+            const query = `
+            select * from user where idUser in
+            (select idAcc2 from conversation as cv 
+            join user as us on cv.idAcc1 = us.idUser where cv.idAcc1 = ${idAcc} and us.idRole=0 and us.isDelete = 0 and cv.idAcc2 in
+            (select idUser from user where userName like '%${userSearch}%' and idRole=0 and isDelete=0) and cv.idConversation not in
+            (select idConversation from block where idBlocked = 1)
+            union
+            select idAcc1 from conversation as cv 
+            join user as us on cv.idAcc2 = us.idUser where cv.idAcc2 = ${idAcc} and us.idRole=0 and us.isDelete=0 and cv.idAcc1 in
+            (select idUser from user where userName like '%${userSearch}%' and idRole=0 and isDelete=0) and cv.idConversation not in
+            (select idConversation from block where idBlock = 1))`;
+            console.log(query);
+            db.query(query, (err,results)=>{
+                if (err) return reject({
+                    errCode: 2,
+                    errMessage: "Xuất hiện lỗi",
+                });
+                else if (results.length == 0){
+                    return reject({
+                        errCode: 1,
+                        errMessage: "Không tìm thấy người phù hợp",
+                    })
+                }
+                else return resolve(results);
+            })
+        })
+    }
+
     
 }
 module.exports = Account;

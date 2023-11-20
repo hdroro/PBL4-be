@@ -64,6 +64,23 @@ const getUserByUsername = async (req, res) => {
     }
 }
 
+const getUserBySearch = async (req,res)=>{
+    try{
+        if(req.query.nickname){
+            const nickname = req.query.nickname;
+            // const idAcc = req.session.idUser;
+            const idAcc = req.body.idUser;
+            const listUser = await userService.handleGetUserBySearch(idAcc,nickname);
+            return res.status(200).json({ listUser });
+        }else{
+            return res.status(400).json({ error: 'Không có trường tìm kiếm' });
+        }
+    }
+    catch(err){
+        return res.status(400).json(err);
+    }
+}
+
 const getInfoByID = async (req, res) => {
     if (req.query.idUser) {
         const userData = await userService.handleGetInfoByID(req.query.idUser);
@@ -193,4 +210,5 @@ module.exports = {
     getProfileSetting: getProfileSetting,
     handleAddFriendRelation: handleAddFriendRelation,
     handleCheckFriendRelation: handleCheckFriendRelation,
+    getUserBySearch: getUserBySearch,
 }

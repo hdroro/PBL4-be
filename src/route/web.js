@@ -21,6 +21,7 @@ let initWebRoutes = (app) => {
     router.post('/api/setting/editprofile', userController.handleEditProfile);
     router.get('/api/setting/editprofile', userController.getProfileSetting);
     router.post('/api/setting/changepassword', userController.handleChangePassword);
+    router.get('/api/get-user-by-search', userController.getUserBySearch);
 
     //conversation
     router.get('/api/user-chat', conversationController.getUserChat);

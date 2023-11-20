@@ -1,6 +1,6 @@
+const { resolve } = require('path');
 const account = require('../models/account');
 const zodiac = require('../models/zodiac');
-const friend_relation = require('../models/friend_relation');
 
 let handleUserLogin = (username, password) => {
     return new Promise(async (resolve, reject) => {
@@ -81,6 +81,23 @@ let handleGetInfoByID = (idUser) => {
             resolve(userDataInfo);
         } catch (error) {
             reject(error);
+        }
+    })
+}
+
+let handleGetUserBySearch = (idAcc, userSearch)=>{
+    return new Promise( async (resolve,reject)=>{
+        try{
+            const listUser = await new account().getUserBySearch(idAcc,userSearch);
+            console.log(listUser);
+            const listUserInfo = {
+                listUser: listUser,
+                errCode: 0,
+                errMessage: "OK",
+            }
+            resolve(listUserInfo);
+        }catch(err){
+            reject(err);
         }
     })
 }
@@ -245,8 +262,9 @@ module.exports = {
     handleGetInfo: handleGetInfo,
     handleGetInfoByID: handleGetInfoByID,
     handleUserSignUp: handleUserSignUp,
-    handleEditProfile: handleEditProfile,
-    handleChangePassword: handleChangePassword,
     handleAddFriendRelation: handleAddFriendRelation,
+    handleChangePassword: handleChangePassword,
     handleCheckFriendRelation: handleCheckFriendRelation,
+    handleEditProfile: handleEditProfile,
+    handleGetUserBySearch: handleGetUserBySearch,
 }
