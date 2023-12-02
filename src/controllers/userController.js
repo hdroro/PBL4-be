@@ -224,11 +224,11 @@ module.exports = {
   getMatching: getMatching,
   getUserByUsername: getUserByUsername,
   getInfoByID: getInfoByID,
-  getUserBySearch: getUserBySearch,
   handleSignup: handleSignup,
   handleEditProfile: handleEditProfile,
   handleChangePassword: handleChangePassword,
   getProfileSetting: getProfileSetting,
   handleAddFriendRelation: handleAddFriendRelation,
   handleCheckFriendRelation: handleCheckFriendRelation,
+  getUserBySearch: getUserBySearch,
 };

@@ -281,9 +281,9 @@ module.exports = {
   handleGetInfo: handleGetInfo,
   handleGetInfoByID: handleGetInfoByID,
   handleUserSignUp: handleUserSignUp,
+  handleAddFriendRelation: handleAddFriendRelation,
+  handleChangePassword: handleChangePassword,
+  handleCheckFriendRelation: handleCheckFriendRelation,
   handleEditProfile: handleEditProfile,
   handleGetUserBySearch: handleGetUserBySearch,
-  handleChangePassword: handleChangePassword,
-  handleAddFriendRelation: handleAddFriendRelation,
-  handleCheckFriendRelation: handleCheckFriendRelation,
 };
