@@ -24,6 +24,7 @@ let initWebRoutes = (app) => {
     "/api/setting/changepassword",
     userController.handleChangePassword
   );
+  router.get("/api/get-user-by-search", userController.getUserBySearch);
 
   //conversation
   router.get("/api/user-chat", conversationController.getUserChat);
