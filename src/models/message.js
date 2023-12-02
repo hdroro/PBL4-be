@@ -1,13 +1,14 @@
 const db = require('../config/conectDB');
 
 class Conversation {
-    constructor(idMessage, direct, messageText, timeSend, idConversation, isImage) {
+    constructor(idMessage, direct, messageText, timeSend, idConversation, isFile, fileName) {
         this.idMessage = idMessage;
         this.direct = direct;
         this.messageText = messageText;
         this.timeSend = timeSend;
         this.idConversation = idConversation;
-        this.isImage = isImage;
+        this.isFile = isFile;
+        this.fileName = fileName;
     }
 
     async loadMessages(idUser) {
@@ -69,8 +70,8 @@ class Conversation {
 
     async saveMessage(){
         return new Promise((resolve, reject) => {
-                var query = `INSERT INTO message (direct, messageText, timeSend, idConversation, isImage) VALUES (?, ?, ?, ?, ?)`;
-                db.query(query, [this.direct, this.messageText, this.timeSend, this.idConversation, this.isImage], (insertErr, insertResults) => {
+                var query = `INSERT INTO message (direct, messageText, timeSend, idConversation, isFile, fileName) VALUES (?, ?, ?, ?, ?, ?)`;
+                db.query(query, [this.direct, this.messageText, this.timeSend, this.idConversation, this.isFile, this.fileName], (insertErr, insertResults) => {
                     if (insertErr) {
                         return reject(insertErr);
                     }

@@ -32,9 +32,10 @@ const postMessage = async (req, res ) => {
     const messageText = req.body.messageText;
     const timeSend = req.body.timeSend;
     const idConversation = req.body.idConversation;
+    const fileName = req.body.fileName;
     console.log(direct + ' ' + messageText + ' ' + timeSend+ ' ' + idConversation);
     if( messageText && timeSend && idConversation){
-        const saveMessage = await messageService.handleCreateConversation(direct, messageText,timeSend, idConversation);
+        const saveMessage = await messageService.handleCreateConversation(direct, messageText,timeSend, idConversation, fileName);
         return res.status(200).json({saveMessage});
     }
     else console.log("Nope");
@@ -47,12 +48,14 @@ const postFile = async(req,res)=>{
         const timeSend = req.body.timeSend;
         const idConversation = req.body.idConversation;
         const fileName = req.file.filename;
-        console.log(direct + ' ' + fileName + ' ' + timeSend+ ' ' + idConversation);
+        const fileName_ = req.body.fileName;
+        console.log(" req.file",  req.file);
+        console.log(direct + ' ' + req.file + ' ' + timeSend+ ' ' + idConversation + " " + fileName_);
         if( fileName && timeSend && idConversation){
-            const saveMessage = await messageService.handleCreateConversationOfFile(direct, fileName,timeSend, idConversation);
+            const saveMessage = await messageService.handleCreateConversationOfFile(direct, fileName,timeSend, idConversation, fileName_);
             return res.status(200).json({saveMessage});
         }
-        else console.log("Nope");
+        else console.log(err);
     })
 }
 
