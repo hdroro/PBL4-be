@@ -13,7 +13,7 @@ class Zodiac {
 
     async getIdZodiac(date, month) {
         return new Promise((resolve, reject) => {
-            const query = `select idZodiac from zodiac where (dateStart < ${date} and monthStart = ${month}) or (dateEnd > ${date} and monthEnd = ${month})`;
+            const query = `select idZodiac from zodiac where (dateStart <= ${date} and monthStart = ${month}) or (dateEnd >= ${date} and monthEnd = ${month})`;
             db.query(query, (err, results) => {
                 if (err) {
                     return reject(err);

@@ -7,6 +7,9 @@ import postController from "../controllers/postController";
 import blockController from "../controllers/blockController";
 import deleteController from "../controllers/deleteController";
 import imageController from "../controllers/imageController";
+import compatibilityController from '../controllers/compatibilityController';
+import notificationController from '../controllers/notificationMatchingController';
+
 
 let router = express.Router();
 
@@ -25,6 +28,7 @@ let initWebRoutes = (app) => {
     userController.handleChangePassword
   );
   router.get("/api/get-user-by-search", userController.getUserBySearch);
+  router.get('/api/check-friend-relation', conversationController.checkFriendRelation);
 
   //conversation
   router.get("/api/user-chat", conversationController.getUserChat);
@@ -114,15 +118,16 @@ let initWebRoutes = (app) => {
   //image
   router.get("/api/get-image", imageController.getImageInfo);
 
-  // friend-relation
-  router.get(
-    "/api/check-friend-relation",
-    userController.handleCheckFriendRelation
-  );
-  router.post(
-    "/api/add-friend-relation",
-    userController.handleAddFriendRelation
-  );
+  // matching
+  router.get('/api/random-matching', compatibilityController.handleRandomUserMatching);
+
+  // notification
+  router.get('/api/get-notification-matching', notificationController.handleGetNotificationMatching);
+  router.post('/api/create-notification-matching', notificationController.handleAddNotificationMatching);
+  router.post('/api/deny-notification-matching', notificationController.handleSetDenyNotificationMatching);
+  router.post('/api/read-notification-matching', notificationController.handleSetReadNotificationMatching);
+  router.get('/api/get-count-not-read-notification-matching', notificationController.handleGetCountNotReadNotificationMatching);
+  router.get('/api/get-detail-notification-matching', notificationController.handleGetDetailNotificationMatching)
 
   return app.use("/", router);
 };

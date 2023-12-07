@@ -64,6 +64,21 @@ const createConversation = async(req, res) => {
     }
 }
 
+const checkFriendRelation = async(req, res) => {
+    if(req.query.idAcc1 && req.query.idAcc2) {
+        const conversationData = await conversationService.handleCheckFriendRelation(req.query.idAcc1, req.query.idAcc2);
+        return res.status(200).json({
+            errCode: conversationData.errCode,
+            errMessage: conversationData.errMessage,
+        });
+    } else {
+        return res.status(400).json({
+            errCode: 2,
+            errorMessage: 'Missing input params!',
+        });
+    }
+}
+
 module.exports = {
     getUserChat: getUserChat,
     putBlockConversation: putBlockConversation,
@@ -71,4 +86,5 @@ module.exports = {
     updateBlockStatusConversation: updateBlockStatusConversation,
     getConversationByID: getConversationByID,
     createConversation: createConversation,
+    checkFriendRelation: checkFriendRelation,
 }

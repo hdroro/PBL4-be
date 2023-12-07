@@ -1,4 +1,5 @@
 import userService from "../services/userService";
+import compatibility from '../services/compatibilityService';
 
 const handleLoging = async (req, res) => {
   try {
@@ -185,39 +186,6 @@ const handleChangePassword = async (req, res) => {
   }
 };
 
-const handleCheckFriendRelation = async (req, res) => {
-  if (!req.query.idAcc1 || !req.query.idAcc2) {
-    return res.status(200).json({
-      errCode: 2,
-      errMessage: "Missing params input!",
-    });
-  }
-  const relation = await userService.handleCheckFriendRelation(
-    req.query.idAcc1,
-    req.query.idAcc2
-  );
-  return res.status(200).json({
-    errCode: relation.errCode,
-    errMessage: relation.errMessage,
-  });
-};
-
-const handleAddFriendRelation = async (req, res) => {
-  if (!req.body.idAcc1 || !req.body.idAcc2) {
-    return res.status(200).json({
-      errCode: 2,
-      errMessage: "Missing params input!",
-    });
-  }
-  const relation = await userService.handleAddFriendRelation(
-    req.body.idAcc1,
-    req.body.idAcc2
-  );
-  return res.status(200).json({
-    errCode: relation.errCode,
-    errMessage: relation.errMessage,
-  });
-};
 module.exports = {
   handleLoging: handleLoging,
   handleLogout: handleLogout,
@@ -228,7 +196,5 @@ module.exports = {
   handleEditProfile: handleEditProfile,
   handleChangePassword: handleChangePassword,
   getProfileSetting: getProfileSetting,
-  handleAddFriendRelation: handleAddFriendRelation,
-  handleCheckFriendRelation: handleCheckFriendRelation,
   getUserBySearch: getUserBySearch,
 };
