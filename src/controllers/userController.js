@@ -69,7 +69,7 @@ const getUserBySearch = async (req, res) => {
     if (req.query.nickname) {
       const nickname = req.query.nickname;
       // const idAcc = req.session.idUser;
-      const idAcc = req.body.idUser;
+      const idAcc = req.query.idUser;
       const listUser = await userService.handleGetUserBySearch(idAcc, nickname);
       return res.status(200).json({ listUser });
     } else {
@@ -81,6 +81,7 @@ const getUserBySearch = async (req, res) => {
 };
 
 const getInfoByID = async (req, res) => {
+  console.log("req.query.idUser", req.query.idUser);
   if (req.query.idUser) {
     const userData = await userService.handleGetInfoByID(req.query.idUser);
 

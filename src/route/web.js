@@ -13,6 +13,7 @@ let router = express.Router();
 let initWebRoutes = (app) => {
   //user
   router.post("/api/login", userController.handleLoging);
+
   router.post("/api/logout", userController.handleLogout);
   router.get("/api/matching", userController.getMatching);
   router.get("/api/get-user", userController.getInfoByID);

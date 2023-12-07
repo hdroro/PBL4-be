@@ -64,9 +64,9 @@ let handleGetInfoByID = (idUser) => {
 
       const userinfo = await user.getCusByID(idUser);
 
-      console.log("service");
-      console.log(userinfo);
-      console.log("userinfo.idZodiac " + userinfo[0].idZodiac);
+      // console.log("service");
+      // console.log(userinfo);
+      // console.log("userinfo.idZodiac " + userinfo[0].idZodiac);
       const avatar = await zodiac_.getAvatarByID(userinfo[0].idZodiac);
 
       userDataInfo.errCode = 0;
@@ -84,21 +84,33 @@ let handleGetInfoByID = (idUser) => {
   });
 };
 
-let handleGetUserBySearch = (idAcc, userSearch) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const listUser = await new account().getUserBySearch(idAcc, userSearch);
-      console.log(listUser);
-      const listUserInfo = {
-        listUser: listUser,
-        errCode: 0,
-        errMessage: "OK",
+let handleGetUserBySearch = async (idAcc, userSearch) => {
+  try {
+    let listUserInfo = {};
+    const listUser = await new account().getUserBySearch(idAcc, userSearch);
+    const avatarPromises = listUser.map((user) =>
+      new zodiac().getAvatarByID(user.idZodiac)
+    );
+    const avatars = await Promise.all(avatarPromises);
+
+    console.log("avatars", avatars);
+
+    listUserInfo.errCode = 0;
+    listUserInfo.errMessage = "OK";
+
+    listUserInfo.listUser = listUser.map((user, index) => {
+      delete user.password;
+      return {
+        ...user,
+        avatar: avatars[index],
       };
-      resolve(listUserInfo);
-    } catch (err) {
-      reject(err);
-    }
-  });
+    });
+
+    return listUserInfo;
+  } catch (err) {
+    console.error("Error in handleGetUserBySearch:", err);
+    throw err;
+  }
 };
 
 let handleUserSignUp = (username, password, fullname, birth, gender) => {
