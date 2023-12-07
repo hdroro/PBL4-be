@@ -1,6 +1,5 @@
 const account = require("../models/account");
 const zodiac = require("../models/zodiac");
-const friend_relation = require("../models/friend_relation");
 
 let handleUserLogin = (username, password) => {
   return new Promise(async (resolve, reject) => {
@@ -238,64 +237,13 @@ let handleChangePassword = (username, oldpassword, newpassword) => {
   });
 };
 
-let handleAddFriendRelation = (idAcc1, idAcc2) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let relationInfo = {};
-      const relation = new friend_relation();
-      const checkFriendRelation = await relation.checkFriendRelation(
-        idAcc1,
-        idAcc2
-      );
-      if (!checkFriendRelation) {
-        const idFriendRelation = await relation.save(idAcc1, idAcc2);
-        if (idFriendRelation) {
-          relationInfo.errCode = 0;
-          relationInfo.errMessage = "OK!";
-        }
-      } else {
-        relationInfo.errCode = 1;
-        relationInfo.errMessage =
-          "Friend existed! Can not add new friend relation!";
-      }
-      resolve(relationInfo);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
-let handleCheckFriendRelation = (idAcc1, idAcc2) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      let relationInfo = {};
-      const relation = new friend_relation();
-      const checkFriendRelation = await relation.checkFriendRelation(
-        idAcc1,
-        idAcc2
-      );
-      if (checkFriendRelation) {
-        relationInfo.errCode = 0;
-        relationInfo.errMessage = "Friend!";
-      } else {
-        relationInfo.errCode = 1;
-        relationInfo.errMessage = "Not friend!";
-      }
-      resolve(relationInfo);
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
 
 module.exports = {
   handleUserLogin: handleUserLogin,
   handleGetInfo: handleGetInfo,
   handleGetInfoByID: handleGetInfoByID,
   handleUserSignUp: handleUserSignUp,
-  handleAddFriendRelation: handleAddFriendRelation,
   handleChangePassword: handleChangePassword,
-  handleCheckFriendRelation: handleCheckFriendRelation,
   handleEditProfile: handleEditProfile,
   handleGetUserBySearch: handleGetUserBySearch,
 };
