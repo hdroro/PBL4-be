@@ -2,11 +2,20 @@ const db = require("../config/conectDB");
 const bcrypt = require("bcrypt");
 
 class Account {
-  constructor(username, password, fullName, birth, gender, bio, idZodiac) {
+  constructor(
+    username,
+    password,
+    idRole,
+    fullName,
+    birth,
+    gender,
+    bio,
+    idZodiac
+  ) {
     this.username = username;
     this.password = password;
     this.isDelete = 0;
-    this.idRole = 0;
+    this.idRole = idRole;
     this.fullName = fullName;
     this.birth = birth;
     this.gender = gender;
@@ -201,13 +210,12 @@ class Account {
 
   async getAdminAcc(username) {
     return new Promise((resolve, reject) => {
-      var query = `select * from user where userName = ? and idRole = 1`;
+      var query = `select * from user where username = ? and idRole = 1`;
       db.query(query, [username], (err, results) => {
         if (err) {
           return reject(err);
         }
-        if (results.length === 0) return reject(err);
-        return resolve(results);
+        return resolve(results.length);
       });
     });
   }

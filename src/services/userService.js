@@ -5,7 +5,8 @@ let handleUserLogin = (username, password) => {
   return new Promise(async (resolve, reject) => {
     try {
       let userData = {};
-      const user = new account(username, password);
+      const idRole = await new account().getAdminAcc(username);
+      const user = new account(username, password, idRole);
       const idUser = await user.getIdAccount(username);
       let userCheck = await user.checkUsername();
       if (userCheck) {
@@ -236,7 +237,6 @@ let handleChangePassword = (username, oldpassword, newpassword) => {
     }
   });
 };
-
 
 module.exports = {
   handleUserLogin: handleUserLogin,

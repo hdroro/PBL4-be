@@ -1,5 +1,4 @@
 import userService from "../services/userService";
-import compatibility from '../services/compatibilityService';
 
 const handleLoging = async (req, res) => {
   try {
