@@ -1,5 +1,9 @@
-const account = require("../models/account");
-const zodiac = require("../models/zodiac");
+const { resolve } = require('path');
+const MyDate = require('../models/mydate');
+const account = require('../models/account');
+const zodiac = require('../models/zodiac');
+const { rejects, throws } = require('assert');
+const { error } = require('console');
 
 let handleUserLogin = (username, password) => {
   return new Promise(async (resolve, reject) => {
@@ -239,11 +243,17 @@ let handleChangePassword = (username, oldpassword, newpassword) => {
 };
 
 module.exports = {
-  handleUserLogin: handleUserLogin,
-  handleGetInfo: handleGetInfo,
-  handleGetInfoByID: handleGetInfoByID,
-  handleUserSignUp: handleUserSignUp,
-  handleChangePassword: handleChangePassword,
-  handleEditProfile: handleEditProfile,
-  handleGetUserBySearch: handleGetUserBySearch,
-};
+    handleUserLogin: handleUserLogin,
+    handleGetInfo: handleGetInfo,
+    handleGetInfoByID: handleGetInfoByID,
+    handleUserSignUp: handleUserSignUp,
+    handleAddFriendRelation: handleAddFriendRelation,
+    handleChangePassword: handleChangePassword,
+    handleCheckFriendRelation: handleCheckFriendRelation,
+    handleEditProfile: handleEditProfile,
+    handleGetUserBySearch: handleGetUserBySearch,
+    handleGetListUser: handleGetListUser,
+    handleGetListAccReported: handleGetListAccReported,
+    handleDeleteUserByAdmin: handleDeleteUserByAdmin,
+    handleGetUserByAdmin: handleGetUserByAdmin,
+}

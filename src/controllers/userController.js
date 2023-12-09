@@ -81,15 +81,14 @@ const getUserBySearch = async (req, res) => {
 };
 
 const getInfoByID = async (req, res) => {
-  console.log("req.query.idUser", req.query.idUser);
-  if (req.query.idUser) {
-    const userData = await userService.handleGetInfoByID(req.query.idUser);
+    if (req.query.idUser) {
+        const userData = await userService.handleGetInfoByID(req.query.idUser);
+        return res.status(200).json({ userData });
+    } else {
+        return res.status(400).json({ error: 'Người dùng không tồn tại' });
+    }
+}
 
-    return res.status(200).json({ userData });
-  } else {
-    return res.status(400).json({ error: "Người dùng không tồn tại" });
-  }
-};
 
 const handleSignup = async (req, res) => {
   const { username, password, fullname, date, gender } = req.body;
@@ -158,43 +157,58 @@ const getProfileSetting = async (req, res) => {
 };
 
 const handleChangePassword = async (req, res) => {
-  console.log(req.body);
-  const { currentpassword, newpassword, retypepassword } = req.body;
-  if (!currentpassword || !newpassword || !retypepassword) {
-    return res.status(200).json({
-      errCode: 4,
-      message: "Missing inputs parameter!.",
-    });
-  }
-  if (newpassword != retypepassword) {
-    return res.status(200).json({
-      errCode: 3,
-      message: "retype password wrong!",
-    });
-  }
+    console.log(req.body);
+    const { currentpassword, newpassword, retypepassword } = req.body;
+    if (!currentpassword || !newpassword || !retypepassword) {
+        return res.status(200).json({
+            errCode: 4,
+            message: "Missing inputs parameter!.",
+        });
+    }
+    if (newpassword != retypepassword) {
+        return res.status(200).json({
+            errCode: 3,
+            message: "retype password wrong!",
+        });
+    }
 
-  if (req.session.user_session.username) {
-    const userData = await userService.handleChangePassword(
-      req.session.user_session.username,
-      currentpassword,
-      newpassword
-    );
-    return res.status(200).json({
-      errCode: userData.errCode,
-      message: userData.errMessage,
-    });
-  }
-};
+    if (req.session.user_session.username) {
+        const userData = await userService.handleChangePassword(
+            req.session.user_session.username,
+            currentpassword,
+            newpassword
+        );
+        return res.status(200).json({
+            errCode: relation.errCode,
+            errMessage: relation.errMessage,
+        })
+    }
+}
 
+const handleAddFriendRelation = async(req, res) => {
+    if(!req.body.idAcc1 || !req.body.idAcc2) {
+        return res.status(200).json({
+            errCode: 2,
+            errMessage: 'Missing params input!',
+        });
+    }
+    const relation = await userService.handleAddFriendRelation(req.body.idAcc1, req.body.idAcc2);
+    return res.status(200).json({
+        errCode: relation.errCode,
+        errMessage: relation.errMessage,
+    })
+}
 module.exports = {
-  handleLoging: handleLoging,
-  handleLogout: handleLogout,
-  getMatching: getMatching,
-  getUserByUsername: getUserByUsername,
-  getInfoByID: getInfoByID,
-  handleSignup: handleSignup,
-  handleEditProfile: handleEditProfile,
-  handleChangePassword: handleChangePassword,
-  getProfileSetting: getProfileSetting,
-  getUserBySearch: getUserBySearch,
-};
+    handleLoging: handleLoging,
+    handleLogout: handleLogout,
+    getMatching: getMatching,
+    getUserByUsername: getUserByUsername,
+    getInfoByID: getInfoByID,
+    handleSignup: handleSignup,
+    handleEditProfile: handleEditProfile,
+    handleChangePassword: handleChangePassword,
+    getProfileSetting: getProfileSetting,
+    handleAddFriendRelation: handleAddFriendRelation,
+    handleCheckFriendRelation: handleCheckFriendRelation,
+    getUserBySearch: getUserBySearch,
+}

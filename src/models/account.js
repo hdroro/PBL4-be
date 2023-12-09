@@ -169,17 +169,30 @@ class Account {
     });
   }
 
-  async deleteAccount(username) {
-    return new Promise((resolve, reject) => {
-      var query = `UPDATE user SET isDelete = 1 WHERE userName = ?`;
-      db.query(query, [username], (err, results) => {
-        if (err) {
-          return reject(err);
-        }
-        return resolve(results);
-      });
-    });
-  }
+    async deleteAccount(username) {
+        return new Promise((resolve, reject) => {
+            var query = `UPDATE user SET isDelete = 1 WHERE userName = ?`;
+            db.query(query, [username], (err, results) => {
+                if (err) {
+                    return reject(err);
+                }
+                return resolve(results);
+            });
+        })
+    }
+
+    async deleteAccountByAdmin(idUser) {
+        return new Promise((resolve, reject) => {
+            var query = `UPDATE user SET isDelete = 1 WHERE idUser = ?`;
+            db.query(query, [idUser], (err, results) => {
+                if (err) return reject({
+                    errCode: 2,
+                    errMessage: "Xuat hien loi",
+                });
+                else return resolve();
+            });
+        })
+    }
 
   async getCusAcc(username) {
     return new Promise((resolve, reject) => {

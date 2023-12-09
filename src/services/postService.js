@@ -70,11 +70,28 @@ async function updatePostById(idAccPost, idPost, content){
     }
 }
 
+async function getDetailPostReported(idPost){
+    try{
+        if (!idPost) return {errCode:3, errMessage: "Các tham số truyền vào thiếu"};
+        const postModel = new Post();
+        const postInfo = await postModel.getDetailPostReported(idPost);
+        return {
+            errCode: 0,
+            errMessage: 'OK',
+            post: postInfo
+        }
+    }
+    catch(err){
+        throw err;
+    }
+}
+
 
 module.exports = {
     GetPostByIdUser,
     createPostByUser,
     deletePostId,
     getInfoPost,
-    updatePostById
+    updatePostById,
+    getDetailPostReported
 };

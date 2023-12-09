@@ -10,6 +10,8 @@ import imageController from "../controllers/imageController";
 import compatibilityController from '../controllers/compatibilityController';
 import notificationController from '../controllers/notificationMatchingController';
 
+import reportController from '../controllers/reportController';
+import zodiacMessageController from "../controllers/zodiac_messageController";
 
 let router = express.Router();
 
@@ -129,6 +131,26 @@ let initWebRoutes = (app) => {
   router.post('/api/read-notification-matching', notificationController.handleSetReadNotificationMatching);
   router.get('/api/get-count-not-read-notification-matching', notificationController.handleGetCountNotReadNotificationMatching);
   router.get('/api/get-detail-notification-matching', notificationController.handleGetDetailNotificationMatching)
+
+    // report
+    router.get('/api/admin/get-all-report', reportController.getAllReport);
+    router.get('/api/admin/get-info-detail-post', postController.getInfoPostByAdmin);
+    router.put('/api/admin/deny-report', reportController.denyReport);
+    router.put('/api/admin/accept-report', reportController.acceptReport);
+    router.put('/api/create-report',reportController.createReport);
+
+    //zodiac message
+    router.get('/api/get-list-zodiac-message',zodiacMessageController.getZodiacMessageByIdUser);
+    router.post('/api/read-zodiac-message',zodiacMessageController.readZodiacMessage);
+    router.get('/api/admin/get-all-zodiac-message',zodiacMessageController.getAllZodiacMessage);
+    router.get('/api/admin/get-detail-zodiac-message',zodiacMessageController.getZodiacMessageDetail);
+    router.put('/api/admin/create-zodiac-message',zodiacMessageController.createZodiacMessage);
+
+    //user (admin)
+    router.get('/api/admin/get-list-user',userController.getListUser); 
+    router.get('/api/admin/get-list-acc-report',userController.getListAccReported);
+    router.get('/api/admin/get-user',userController.getUserByAdmin);  
+    router.post('/api/admin/delete-user',userController.deleteUserByAdmin); 
 
   return app.use("/", router);
 };

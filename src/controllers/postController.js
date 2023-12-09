@@ -72,10 +72,21 @@ const getInfoPost = async(req,res) =>{
     }
 }
 
+const getInfoPostByAdmin = async(req,res)=>{
+    try{
+        const post = await postService.getDetailPostReported(req.query.idPost);
+        return res.status(200).json(post);
+    }
+    catch(err){
+        return res.status(400).json(err);
+    }
+}
+
 module.exports = {
     getPostByIDAccPost,
     createPostByUser,
     updatePost,
     deletePostById,
-    getInfoPost
+    getInfoPost,
+    getInfoPostByAdmin
 }
