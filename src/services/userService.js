@@ -96,11 +96,21 @@ let handleGetUserBySearch = (idAcc, userSearch) => {
     try {
       const listUser = await new account().getUserBySearch(idAcc, userSearch);
       console.log(listUser);
+
       const listUserInfo = {
-        listUser: listUser,
+        listUser: [],
         errCode: 0,
         errMessage: "OK",
       };
+
+      for (const item of listUser) {
+        const avatar = await new zodiac().getAvatarByID(item.idZodiac);
+        listUserInfo.listUser.push({
+          ...item,
+          avatar: avatar,
+        });
+      }
+
       resolve(listUserInfo);
     } catch (err) {
       reject(err);
