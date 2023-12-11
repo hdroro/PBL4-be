@@ -155,10 +155,26 @@ class Account {
 
   async editAccount(id, username, name, bio, birthday, gender, idZodiac) {
     return new Promise(async (resolve, reject) => {
-      const query = `update user set username = ?, fullName = ?, bio = ?, birth =?, gender = ?, idZodiac = ? where idUser = ? and idRole = 0`;
+      const query = `update user set fullName = ?, bio = ?, birth =?, gender = ?, idZodiac = ? where idUser = ? and idRole = 0`;
       db.query(
         query,
-        [username, name, bio, birthday, gender, idZodiac, id],
+        [name, bio, birthday, gender, idZodiac, id],
+        (err, results) => {
+          if (err) {
+            return reject(err);
+          }
+          return resolve(true);
+        }
+      );
+    });
+  }
+
+  async editAccountBrief(username, name, bio) {
+    return new Promise(async (resolve, reject) => {
+      const query = `update user set fullName = ?, bio = ? where username = ? and idRole = 0`;
+      db.query(
+        query,
+        [name, bio, username],
         (err, results) => {
           if (err) {
             return reject(err);

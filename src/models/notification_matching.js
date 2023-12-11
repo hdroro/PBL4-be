@@ -10,7 +10,7 @@ class Notification_Matching {
 
     async getListNotificationMatching(idAcc1) {
         return new Promise((resolve, reject) => {
-            const query = `select * from notification_matching where idAcc1 = ?`;
+            const query = `select * from notification_matching where idAcc1 = ? order by timeCreated desc`;
             db.query(query, [idAcc1], (err, results) => {
                 if (err) {
                     return reject(err);

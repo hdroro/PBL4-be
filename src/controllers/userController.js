@@ -264,6 +264,28 @@ const getUserByAdmin = async (req, res) => {
     return res.status(400).json(err);
   }
 };
+
+const handleEditProfileBrief = async(req, res) => {
+  const { username, fullname, bio } = req.body;
+  console.log("post");
+  console.log(req.body);
+  if (!username || !fullname || !bio) {
+    return res.status(200).json({
+      errCode: 4,
+      message: "Missing inputs parameter!.",
+    });
+  }
+  const userData = await userService.handleEditProfileBrief(
+    username,
+    fullname,
+    bio
+  );
+  return res.status(200).json({
+    errCode: userData.errCode,
+    message: userData.errMessage,
+    user: userData.user ? userData.user : {},
+  });
+}
 module.exports = {
   handleLoging: handleLoging,
   handleLogout: handleLogout,
@@ -281,4 +303,5 @@ module.exports = {
   getListAccReported: getListAccReported,
   deleteUserByAdmin: deleteUserByAdmin,
   getUserByAdmin: getUserByAdmin,
+  handleEditProfileBrief: handleEditProfileBrief,
 };

@@ -12,6 +12,7 @@ import notificationController from '../controllers/notificationMatchingControlle
 
 import reportController from '../controllers/reportController';
 import zodiacMessageController from "../controllers/zodiac_messageController";
+import zodiacController from "../controllers/zodiacController"
 
 let router = express.Router();
 
@@ -29,6 +30,7 @@ let initWebRoutes = (app) => {
     router.post("/api/setting/changepassword",userController.handleChangePassword);
     router.get("/api/get-user-by-search", userController.getUserBySearch);
     router.get('/api/check-friend-relation', conversationController.checkFriendRelation);
+    router.post("/api/setting/editprofile-brief", userController.handleEditProfileBrief);
 
     //conversation
     router.get("/api/user-chat", conversationController.getUserChat);
@@ -93,6 +95,10 @@ let initWebRoutes = (app) => {
     router.put('/api/admin/deny-report', reportController.denyReport);
     router.put('/api/admin/accept-report', reportController.acceptReport);
     router.put('/api/create-report',reportController.createReport);
+
+    // zodiac
+    router.get('/api/admin/get-list-zodiac', zodiacController.getListZodiac);
+    router.get('/api/admin/get-zodiac-info-detail', zodiacController.getZodiacById);
 
     //zodiac message
     router.get('/api/get-list-zodiac-message',zodiacMessageController.getZodiacMessageByIdUser);

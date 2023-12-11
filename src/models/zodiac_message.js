@@ -47,7 +47,7 @@ class zodiacMessage {
 
     async createZodiacMessage(){
         return new Promise((resolve,reject)=>{
-            const query = `insert into zodiac_message (idZodiac, content, timePost) values (${this.idZodiac},${this.content},'${this.timePost}')`;
+            const query = `insert into zodiac_message (idZodiac, content, timePost) values (${this.idZodiac},'${this.content}','${this.timePost}')`;
             db.query(query, (err,result)=>{
                 if (err) reject({
                     errCode: 2,

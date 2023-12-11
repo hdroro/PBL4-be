@@ -207,6 +207,30 @@ let handleEditProfile = (id, username, name, bio, birthday, gender) => {
   });
 };
 
+let handleEditProfileBrief = (username, name, bio) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let userDataInfo = {};
+      const user = new account(username);
+      let addUserCheck = await user.editAccountBrief(
+        username,
+        name,
+        bio,
+      );
+      if (addUserCheck) {
+        userDataInfo.errCode = 0;
+        userDataInfo.errMessage = "Edit info successfully!";
+      } else {
+        userDataInfo.errCode = 1;
+        userDataInfo.errMessage = "Failed edit info!";
+      }
+      resolve(userDataInfo);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 let handleChangePassword = (username, oldpassword, newpassword) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -404,4 +428,5 @@ module.exports = {
   handleGetListAccReported: handleGetListAccReported,
   handleDeleteUserByAdmin: handleDeleteUserByAdmin,
   handleGetUserByAdmin: handleGetUserByAdmin,
+  handleEditProfileBrief: handleEditProfileBrief,
 };
