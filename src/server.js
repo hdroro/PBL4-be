@@ -10,11 +10,11 @@ require("dotenv").config(); // giup chay dc dong process.env
 let app = express();
 const corsOptions = {
   origin: process.env.URL_REACT,
-  credentials: true, //access-control-allow-credentials:true
+  credentials: true,
   optionSuccessStatus: 200,
 };
 app.use("/public", express.static("src/public"));
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(
   session({
