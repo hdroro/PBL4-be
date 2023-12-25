@@ -12,11 +12,11 @@ if (process.env.NODE_ENV === "development") {
   };
 } else {
   dbConfig = {
-    host: process.env.MYSQL_ADDON_HOST,
+    host: process.env.MYSQL_ADDON_DIRECT_HOST,
     user: process.env.MYSQL_ADDON_USER,
     password: process.env.MYSQL_ADDON_PASSWORD,
     database: process.env.MYSQL_ADDON_DB,
-    port: process.env.MYSQL_ADDON_PORT,
+    port: process.env.MYSQL_ADDON_DIRECT_PORT,
   };
 }
 
