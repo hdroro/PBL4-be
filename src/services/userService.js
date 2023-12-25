@@ -1,9 +1,6 @@
-const { resolve } = require("path");
 const MyDate = require("../models/mydate");
 const account = require("../models/account");
 const zodiac = require("../models/zodiac");
-const { rejects, throws } = require("assert");
-const { error } = require("console");
 
 let handleUserLogin = (username, password) => {
   return new Promise(async (resolve, reject) => {
