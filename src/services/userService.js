@@ -11,7 +11,10 @@ let handleUserLogin = (username, password) => {
       if (idRole != 0) idRole_ = 1;
       else idRole_ = 0;
       const user = new account(username, password, idRole_);
+      console.log("jaajajaja loi day a11111");
+
       const idUser = await user?.getIdAccount(username);
+      console.log("jaajajaja loi day a");
       let userCheck = await user?.checkUsername();
       if (userCheck) {
         let passwordCheck = await user.checkPassword(password);
