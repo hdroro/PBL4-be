@@ -59,9 +59,48 @@ const createReport = async (req, res) => {
     return res.status(400).json(err);
   }
 };
+
+const addReportToReport = async (req, res) => {
+  try {
+    if (
+      req.body.idPost &&
+      req.body.idUser &&
+      req.body.content &&
+      req.body.timeReport
+    ) {
+      const idPost = req.body.idPost;
+      const idUser = req.body.idUser;
+      const content = req.body.content;
+      const timeReport = req.body.timeReport;
+      const reportAdded = await reportService.addReportToReport(
+        idPost,
+        idUser,
+        content,
+        timeReport
+      );
+      console.log(
+        "idPost" +
+          idPost +
+          "idUser " +
+          idUser +
+          "content " +
+          content +
+          "time " +
+          timeReport
+      );
+      return res.status(200).json(reportAdded);
+    } else
+      return res
+        .status(400)
+        .json({ errCode: 1, errMessage: "Thiếu trường để tạo" });
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
 module.exports = {
   getAllReport: getAllReport,
   denyReport: denyReport,
   acceptReport: acceptReport,
   createReport: createReport,
+  addReportToReport: addReportToReport,
 };

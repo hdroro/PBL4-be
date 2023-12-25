@@ -13,7 +13,7 @@ import notificationZodiacController from "../controllers/zodiac_notiController";
 
 import reportController from "../controllers/reportController";
 import zodiacMessageController from "../controllers/zodiac_messageController";
-import zodiacController from "../controllers/zodiacController"
+import zodiacController from "../controllers/zodiacController";
 
 let router = express.Router();
 
@@ -21,17 +21,26 @@ let initWebRoutes = (app) => {
   //user
   router.post("/api/login", userController.handleLoging);
 
-    router.post("/api/logout", userController.handleLogout);
-    router.get("/api/matching", userController.getMatching);
-    router.get("/api/get-user", userController.getInfoByID);
-    router.post("/api/signup", userController.handleSignup);
-    router.get("/api/get-user-by-username", userController.getUserByUsername);
-    router.post("/api/setting/editprofile", userController.handleEditProfile);
-    router.get("/api/setting/editprofile", userController.getProfileSetting);
-    router.post("/api/setting/changepassword",userController.handleChangePassword);
-    router.get("/api/get-user-by-search", userController.getUserBySearch);
-    router.get('/api/check-friend-relation', conversationController.checkFriendRelation);
-    router.post("/api/setting/editprofile-brief", userController.handleEditProfileBrief);
+  router.post("/api/logout", userController.handleLogout);
+  router.get("/api/matching", userController.getMatching);
+  router.get("/api/get-user", userController.getInfoByID);
+  router.post("/api/signup", userController.handleSignup);
+  router.get("/api/get-user-by-username", userController.getUserByUsername);
+  router.post("/api/setting/editprofile", userController.handleEditProfile);
+  router.get("/api/setting/editprofile", userController.getProfileSetting);
+  router.post(
+    "/api/setting/changepassword",
+    userController.handleChangePassword
+  );
+  router.get("/api/get-user-by-search", userController.getUserBySearch);
+  router.get(
+    "/api/check-friend-relation",
+    conversationController.checkFriendRelation
+  );
+  router.post(
+    "/api/setting/editprofile-brief",
+    userController.handleEditProfileBrief
+  );
 
   //conversation
   router.get("/api/user-chat", conversationController.getUserChat);
@@ -150,16 +159,23 @@ let initWebRoutes = (app) => {
     notificationController.handleGetDetailNotificationMatching
   );
 
-    // report
-    router.get('/api/admin/get-all-report', reportController.getAllReport);
-    router.get('/api/admin/get-info-detail-post', postController.getInfoPostByAdmin);
-    router.put('/api/admin/deny-report', reportController.denyReport);
-    router.put('/api/admin/accept-report', reportController.acceptReport);
-    router.put('/api/create-report',reportController.createReport);
+  // report
+  router.get("/api/admin/get-all-report", reportController.getAllReport);
+  router.get(
+    "/api/admin/get-info-detail-post",
+    postController.getInfoPostByAdmin
+  );
+  router.put("/api/admin/deny-report", reportController.denyReport);
+  router.put("/api/admin/accept-report", reportController.acceptReport);
+  router.put("/api/create-report", reportController.createReport);
+  router.post("/api/report", reportController.addReportToReport);
 
-    // zodiac
-    router.get('/api/admin/get-list-zodiac', zodiacController.getListZodiac);
-    router.get('/api/admin/get-zodiac-info-detail', zodiacController.getZodiacById);
+  // zodiac
+  router.get("/api/admin/get-list-zodiac", zodiacController.getListZodiac);
+  router.get(
+    "/api/admin/get-zodiac-info-detail",
+    zodiacController.getZodiacById
+  );
 
   //zodiac message
   router.get(
@@ -188,6 +204,11 @@ let initWebRoutes = (app) => {
     zodiacMessageController.filterZodiacMessage
   );
 
+  router.get(
+    "/api/admin/get-id-zodiac-message",
+    zodiacMessageController.getIdZodiacMessage
+  );
+
   // zodiac noti
   router.get(
     "/api/admin/get-detail-noti-message-zodiac",
@@ -195,6 +216,10 @@ let initWebRoutes = (app) => {
   );
 
   //user (admin)
+  router.get(
+    "/api/admin/get-idZodiac-by-idUser",
+    userController.getIdZodiacByIdUser
+  );
   router.get("/api/admin/get-list-user", userController.getListUser);
   router.get(
     "/api/admin/get-list-acc-report",

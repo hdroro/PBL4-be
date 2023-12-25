@@ -57,6 +57,8 @@ const getNotificationByReceiveId = async (req, res) => {
         req.query.receiverId
       );
     return res.status(200).json({ notificationMessageInfo });
+  } else {
+    return res.status(400).json({ error: "Error" });
   }
 };
 
