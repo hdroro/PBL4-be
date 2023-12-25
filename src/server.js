@@ -9,12 +9,12 @@ require("dotenv").config(); // giup chay dc dong process.env
 
 let app = express();
 const corsOptions = {
-  origin: process.env.URL_REACT,
+  origin: "https://zodiac-lazy.on.fleek.co",
   credentials: true,
   optionSuccessStatus: 200,
 };
 app.use("/public", express.static("src/public"));
-app.use(cors());
+app.use(cors(corsOptions));
 
 app.use(
   session({
