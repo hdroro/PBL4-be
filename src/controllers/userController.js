@@ -4,6 +4,7 @@ const handleLoging = async (req, res) => {
   try {
     const username = req.body.username;
     const password = req.body.password;
+    console.log("username", username);
     req.session.user_session = { username: username };
     req.session.isAuth = true;
     req.session.save();

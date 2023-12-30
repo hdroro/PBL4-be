@@ -5,10 +5,11 @@ import initWebRoutes from "./route/web";
 import connectDB from "./config/conectDB";
 import cors from "cors";
 const session = require("express-session");
+require("dotenv").config(); // giup chay dc dong process.env
 
 let app = express();
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.URL_REACT,
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
@@ -22,8 +23,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-
-require("dotenv").config(); // giup chay dc dong process.env
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

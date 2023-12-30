@@ -77,6 +77,7 @@ class Account {
     return new Promise((resolve, reject) => {
       var query = `SELECT * FROM user WHERE userName = ?`;
       db.query(query, [this.username], (err, results) => {
+        console.log("ahahah query", query);
         if (err) {
           return reject(err);
         }
