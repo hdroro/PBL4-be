@@ -9,7 +9,7 @@ require("dotenv").config(); // giup chay dc dong process.env
 
 let app = express();
 const corsOptions = {
-  origin: process.env.URL_REACT,
+  origin: "http://localhost:3000",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
