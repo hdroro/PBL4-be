@@ -1,20 +1,24 @@
 import notification from "../services/notificationMatchingService";
 
 const handleGetNotificationMatching = async (req, res) => {
-  if (!req.query.idUser) {
+  try {
+    if (!req.query.idUser) {
+      return res.status(200).json({
+        errCode: 1,
+        errMessage: "Missing inputs parameter!.",
+      });
+    }
+    const notifData = await notification.handleGetNotificationMatching(
+      req.query.idUser
+    );
     return res.status(200).json({
-      errCode: 1,
-      errMessage: "Missing inputs parameter!.",
+      errCode: notifData.errCode,
+      errMessage: notifData.errMessage,
+      data: notifData.data ? notifData.data : {},
     });
+  } catch (error) {
+    console.log(error);
   }
-  const notifData = await notification.handleGetNotificationMatching(
-    req.query.idUser
-  );
-  return res.status(200).json({
-    errCode: notifData.errCode,
-    errMessage: notifData.errMessage,
-    data: notifData.data ? notifData.data : {},
-  });
 };
 
 const handleAddNotificationMatching = async (req, res) => {
@@ -68,21 +72,23 @@ const handleSetReadNotificationMatching = async (req, res) => {
 };
 
 const handleGetCountNotReadNotificationMatching = async (req, res) => {
-  if (!req.query.idAcc1) {
+  try {
+    if (!req.query.idAcc1) {
+      return res.status(200).json({
+        errCode: 2,
+        errMessage: "Missing inputs parameter!.",
+      });
+    }
+    const notifData =
+      await notification.handleGetCountNotReadNotificationMatching(
+        req.query.idAcc1
+      );
     return res.status(200).json({
-      errCode: 2,
-      errMessage: "Missing inputs parameter!.",
+      errCode: notifData.errCode,
+      errMessage: notifData.errMessage,
+      data: notifData.data,
     });
-  }
-  const notifData =
-    await notification.handleGetCountNotReadNotificationMatching(
-      req.query.idAcc1
-    );
-  return res.status(200).json({
-    errCode: notifData.errCode,
-    errMessage: notifData.errMessage,
-    data: notifData.data,
-  });
+  } catch (error) {}
 };
 
 const handleGetDetailNotificationMatching = async (req, res) => {

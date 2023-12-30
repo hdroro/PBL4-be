@@ -3,10 +3,12 @@ import zodiacMessageService from "../services/zodiac_messageService";
 const getZodiacMessageByIdUser = async (req, res) => {
   try {
     // if(req.query.idUser && req.session.idUser && req.query.idUser == req.session.idUser){
-    if (req.query.idUser) {
+    if (req.query.idUser && req.query.page) {
+      console.log("req.query.page ", req.query.page);
       const idUser = req.query.idUser;
+      const page = req.query.page;
       const listMessage =
-        await zodiacMessageService.handleGetZodiacMessageByIdUser(idUser);
+        await zodiacMessageService.handleGetZodiacMessageByIdUser(idUser, page);
       return res.status(200).json(listMessage);
     } else
       return res.status(400).json({
@@ -87,14 +89,36 @@ const getZodiacMessageDetail = async (req, res) => {
 
 const createZodiacMessage = async (req, res) => {
   try {
-    if (req.body.idZodiac && req.body.content) {
+    if (req.body.idZodiac && req.body.content && req.body.datetime) {
       const idZodiac = req.body.idZodiac;
       const content = req.body.content;
+      const datetime = req.body.datetime;
       const message = await zodiacMessageService.handleCreateZodiacMessage(
         idZodiac,
-        content
+        content,
+        datetime
       );
       return res.status(200).json(message);
+    } else
+      return res.status(400).json({ errCode: 1, errMessage: "Thiếu tham số" });
+  } catch (err) {
+    return res.status(400).json(err);
+  }
+};
+
+const getIdZodiacMessage = async (req, res) => {
+  try {
+    if (req.query.idZodiac && req.query.datetime && req.query.idUser) {
+      const idZodiac = req.query.idZodiac;
+      const datetime = req.query.datetime;
+      const idUser = req.query.idUser;
+      const idZodiac_Message =
+        await zodiacMessageService.handleGetIdZodiacMessage(
+          idZodiac,
+          datetime,
+          idUser
+        );
+      return res.status(200).json(idZodiac_Message);
     } else
       return res.status(400).json({ errCode: 1, errMessage: "Thiếu tham số" });
   } catch (err) {
@@ -109,4 +133,5 @@ module.exports = {
   createZodiacMessage,
   getZodiacMessageDetail,
   readZodiacMessage,
+  getIdZodiacMessage,
 };

@@ -3,20 +3,47 @@ const account = require("../models/account");
 const noti_zodiac = require("../models/noti_zodiac");
 const MyDate = require("../models/mydate");
 
-async function handleGetZodiacMessageByIdUser(idUser) {
+async function handleGetZodiacMessageByIdUser(idUser, page) {
   try {
     const noti_zodiacModel = new noti_zodiac();
-    const listMessage = await noti_zodiacModel.getZodiacMessageByIdUser(idUser);
-    listMessage.forEach((user) => {
-      var time = new MyDate(user.timePost.toString());
-      user.timePost =
-        time.toMyLocaleDateString() + " " + time.toLocaleTimeString();
-    });
-    return {
-      errCode: 0,
-      errMessage: "OK",
-      listMessage: listMessage,
-    };
+    var listMessage = await noti_zodiacModel.getZodiacMessageByIdUser(idUser);
+    if (page != 0) {
+      const perPage = 3;
+      var lastPage = Math.ceil(listMessage.length / perPage);
+      if (lastPage === 0) lastPage = 1;
+      const pageNumber = parseInt(page) || 1;
+      if (pageNumber < 1 || pageNumber > lastPage)
+        throw {
+          errCode: 3,
+          errMessage: "Page number not correct",
+        };
+      const start = (pageNumber - 1) * perPage;
+      const end = pageNumber * perPage;
+      const prev = pageNumber === 1 ? false : pageNumber - 1;
+      const next = pageNumber === lastPage ? false : pageNumber + 1;
+      if (listMessage.length != 0) {
+        listMessage = Array.from(listMessage).slice(start, end);
+        listMessage?.forEach((user) => {
+          var time = new MyDate(user.timePost.toString());
+          user.timePost =
+            time.toMyLocaleDateString() + " " + time.toLocaleTimeString();
+        });
+        return {
+          errCode: 0,
+          errMessage: "OK",
+          listMessage: listMessage,
+          prev: prev,
+          next: next,
+          lastPage: lastPage,
+        };
+      }
+    } else {
+      return {
+        errCode: 0,
+        errMessage: "OK",
+        listMessage: listMessage,
+      };
+    }
   } catch (err) {
     throw err;
   }
@@ -126,11 +153,8 @@ async function getAllZodiacMessage(page) {
   }
 }
 
-async function handleCreateZodiacMessage(idZodiac, content) {
+async function handleCreateZodiacMessage(idZodiac, content, time_change) {
   try {
-    //Resolve time
-    let time = new MyDate();
-    let time_change = time.toDate() + " " + time.toLocaleTimeString();
     const zodiac_messageModel = new zodiacMessage(
       null,
       idZodiac,
@@ -156,6 +180,23 @@ async function handleCreateZodiacMessage(idZodiac, content) {
   }
 }
 
+async function handleGetIdZodiacMessage(idZodiac, timePost, idUser) {
+  try {
+    const idNoti = await new zodiacMessage().getIdZodiacMessage(
+      idZodiac,
+      timePost,
+      idUser
+    );
+    return {
+      errCode: 0,
+      errMessage: "OK",
+      idNoti: idNoti,
+    };
+  } catch (err) {
+    throw err;
+  }
+}
+
 module.exports = {
   handleGetZodiacMessageByIdUser,
   handleReadZodiacMessage,
@@ -163,4 +204,5 @@ module.exports = {
   handleFilterZodiacMessage,
   getAllZodiacMessage,
   handleCreateZodiacMessage,
+  handleGetIdZodiacMessage,
 };

@@ -136,13 +136,32 @@ class Account {
     // }
   }
 
-  async addAccount(username, password, fullName, date, gender, idZodiac) {
+  async addAccount(
+    username,
+    password,
+    fullName,
+    date,
+    gender,
+    idZodiac,
+    timeRegister
+  ) {
     return new Promise(async (resolve, reject) => {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const query = `insert into user(idRole, username, password, fullName, birth, gender, idZodiac, numberWarning, isDelete) values(?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      const query = `insert into user(idRole, username, password, fullName, birth, gender, idZodiac, numberWarning, isDelete, timeRegister) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
       db.query(
         query,
-        [0, username, hashedPassword, fullName, date, gender, idZodiac, 0, 0],
+        [
+          0,
+          username,
+          hashedPassword,
+          fullName,
+          date,
+          gender,
+          idZodiac,
+          0,
+          0,
+          timeRegister,
+        ],
         (err, results) => {
           if (err) {
             return reject(err);
@@ -172,16 +191,12 @@ class Account {
   async editAccountBrief(username, name, bio) {
     return new Promise(async (resolve, reject) => {
       const query = `update user set fullName = ?, bio = ? where username = ? and idRole = 0`;
-      db.query(
-        query,
-        [name, bio, username],
-        (err, results) => {
-          if (err) {
-            return reject(err);
-          }
-          return resolve(true);
+      db.query(query, [name, bio, username], (err, results) => {
+        if (err) {
+          return reject(err);
         }
-      );
+        return resolve(true);
+      });
     });
   }
 
@@ -332,6 +347,20 @@ class Account {
             errMessage: "Xuất hiện lỗi truy vấn getListUserByIdZodiac",
           });
         } else return resolve(results);
+      });
+    });
+  }
+
+  async getListIdZodiacByIdUser(idUser) {
+    return new Promise((resolve, reject) => {
+      var query = `select idZodiac from user where idUser = ${idUser}`;
+      db.query(query, (err, results) => {
+        if (err) {
+          return reject({
+            errCode: 2,
+            errMessage: "Xuất hiện lỗi truy vấn getListZodiacByIdUser",
+          });
+        } else return resolve(results[0]);
       });
     });
   }
