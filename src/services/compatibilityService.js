@@ -17,6 +17,10 @@ async function handleGetRandomUserMatching(idUser, onlineUsers) {
     console.log("zodiac", Listcompatibility);
 
     let ListUserDataOnline = [];
+    onlineUsers = onlineUsers.filter(item => {
+      if(item.userID != 0) return item;
+    })
+
     for (let i = 0; i < onlineUsers.length; i++) {
       const conversationModel = new Conversation(
         "",
@@ -89,7 +93,7 @@ async function handleGetRandomUserMatching(idUser, onlineUsers) {
     console.log(res[randomIndex]);
     return randomData;
   } catch (e) {
-    throw e;
+    console.log(e);
   }
 }
 
