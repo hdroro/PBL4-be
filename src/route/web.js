@@ -45,6 +45,10 @@ let initWebRoutes = (app) => {
   //conversation
   router.get("/api/user-chat", conversationController.getUserChat);
   router.get(
+    "/api/get-id-conversation-by-user",
+    conversationController.getIdConversation
+  );
+  router.get(
     "/api/get-conversation",
     conversationController.getConversationByID
   );

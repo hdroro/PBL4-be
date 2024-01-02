@@ -42,16 +42,15 @@ const postMessage = async (req, res) => {
   const messageText = req.body.messageText;
   const timeSend = req.body.timeSend;
   const idConversation = req.body.idConversation;
+  const isFile = req.body.isFile;
   const fileName = req.body.fileName;
-  console.log(
-    direct + " " + messageText + " " + timeSend + " " + idConversation
-  );
   if (messageText && timeSend && idConversation) {
     const saveMessage = await messageService.handleCreateConversation(
       direct,
       messageText,
       timeSend,
       idConversation,
+      isFile,
       fileName
     );
     return res.status(200).json({ saveMessage });
@@ -66,18 +65,6 @@ const postFile = async (req, res) => {
     const idConversation = req.body.idConversation;
     const fileName = req.file.filename;
     const fileName_ = req.body.fileName;
-    console.log(" req.file", req.file);
-    console.log(
-      direct +
-        " " +
-        req.file +
-        " " +
-        timeSend +
-        " " +
-        idConversation +
-        " " +
-        fileName_
-    );
     if (fileName && timeSend && idConversation) {
       const saveMessage = await messageService.handleCreateConversationOfFile(
         direct,
