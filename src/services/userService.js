@@ -1,9 +1,6 @@
-const { resolve } = require("path");
 const MyDate = require("../models/mydate");
 const account = require("../models/account");
 const zodiac = require("../models/zodiac");
-const { rejects, throws } = require("assert");
-const { error } = require("console");
 
 let handleUserLogin = (username, password) => {
   return new Promise(async (resolve, reject) => {
@@ -15,14 +12,7 @@ let handleUserLogin = (username, password) => {
       else idRole_ = 0;
       const user = new account(username, password, idRole_);
       let userCheck;
-      // try {
-        
         userCheck = await user.checkUsername();
-      // }
-      // catch(error) {
-      //   console.log(error);
-      // }
-      // let 
       if (userCheck) {
         let passwordCheck = await user.checkPassword(password);
 
@@ -127,7 +117,14 @@ let handleGetUserBySearch = (idAcc, userSearch) => {
   });
 };
 
-let handleUserSignUp = (username, password, fullname, birth, gender) => {
+let handleUserSignUp = (
+  username,
+  password,
+  fullname,
+  birth,
+  gender,
+  timeRegister
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       let userDataInfo = {};
@@ -154,7 +151,8 @@ let handleUserSignUp = (username, password, fullname, birth, gender) => {
             fullname,
             birth,
             gender,
-            idZodiac
+            idZodiac,
+            timeRegister
           );
           if (addUserCheck) {
             userDataInfo.errCode = 0;
@@ -231,11 +229,7 @@ let handleEditProfileBrief = (username, name, bio) => {
     try {
       let userDataInfo = {};
       const user = new account(username);
-      let addUserCheck = await user.editAccountBrief(
-        username,
-        name,
-        bio,
-      );
+      let addUserCheck = await user.editAccountBrief(username, name, bio);
       if (addUserCheck) {
         userDataInfo.errCode = 0;
         userDataInfo.errMessage = "Edit info successfully!";
@@ -433,6 +427,20 @@ let handleGetUserByAdmin = async (idUser) => {
   }
 };
 
+let handleGetListIdZodiacByIdUser = async (idUser) => {
+  try {
+    const idZodiac = await new account().getListIdZodiacByIdUser(idUser);
+
+    return {
+      errCode: 0,
+      errMessage: "OK",
+      idZodiac: idZodiac,
+    };
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
   handleUserLogin: handleUserLogin,
   handleGetInfo: handleGetInfo,
@@ -448,4 +456,5 @@ module.exports = {
   handleDeleteUserByAdmin: handleDeleteUserByAdmin,
   handleGetUserByAdmin: handleGetUserByAdmin,
   handleEditProfileBrief: handleEditProfileBrief,
+  handleGetListIdZodiacByIdUser: handleGetListIdZodiacByIdUser,
 };

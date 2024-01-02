@@ -87,6 +87,21 @@ class zodiacMessage {
       });
     });
   }
+
+  async getIdZodiacMessage(idZodiac, timePost, idUser) {
+    return new Promise((resolve, reject) => {
+      const query = `select notiz.idNoti from zodiac_message as zm inner join notification_zodiac as notiz ON zm.idZodiac_Message = notiz.idZodiacMessage and idUser = ${idUser} and idZodiac=${idZodiac} and timePost="${timePost}"`;
+      console.log("query", query);
+      db.query(query, (err, result) => {
+        if (err)
+          reject({
+            errCode: 2,
+            errMessage: "Xuat hien loi",
+          });
+        else resolve(result[0].idNoti);
+      });
+    });
+  }
 }
 
 module.exports = zodiacMessage;

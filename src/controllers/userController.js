@@ -4,6 +4,7 @@ const handleLoging = async (req, res) => {
   try {
     const username = req.body.username;
     const password = req.body.password;
+    console.log("username", username);
     req.session.user_session = { username: username };
     req.session.isAuth = true;
     req.session.save();
@@ -81,17 +82,21 @@ const getUserBySearch = async (req, res) => {
 };
 
 const getInfoByID = async (req, res) => {
-  if (req.query.idUser) {
-    const userData = await userService.handleGetInfoByID(req.query.idUser);
-    return res.status(200).json({ userData });
-  } else {
-    return res.status(400).json({ error: "Người dùng không tồn tại" });
+  try {
+    if (req.query.idUser) {
+      const userData = await userService.handleGetInfoByID(req.query.idUser);
+      return res.status(200).json({ userData });
+    } else {
+      return res.status(400).json({ error: "Người dùng không tồn tại" });
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
 const handleSignup = async (req, res) => {
-  const { username, password, repeatpassword, fullname, date, gender } = req.body;
-  if (!username || !password || !repeatpassword || !fullname || !date) {
+  const { username, password, repeatpassword, fullname, date, gender, timeRegister} = req.body;
+  if (!username || !password || !repeatpassword || !fullname || !date || !timeRegister) {
     return res.status(200).json({
       errCode: 4,
       message: "Missing inputs parameter!.",
@@ -108,7 +113,8 @@ const handleSignup = async (req, res) => {
     password,
     fullname,
     date,
-    gender
+    gender,
+    timeRegister
   );
   return res.status(200).json({
     errCode: userData.errCode,
@@ -162,7 +168,6 @@ const getProfileSetting = async (req, res) => {
 };
 
 const handleChangePassword = async (req, res) => {
-  console.log(req.body);
   const { currentpassword, newpassword, retypepassword } = req.body;
   if (!currentpassword || !newpassword || !retypepassword) {
     return res.status(200).json({
@@ -236,6 +241,17 @@ const getListUser = async (req, res) => {
   }
 };
 
+const getIdZodiacByIdUser = async (req, res) => {
+  try {
+    const idUser = req.query.idUser;
+    const idZodiac = await userService.handleGetListIdZodiacByIdUser(idUser);
+    return res.status(200).json(idZodiac);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err);
+  }
+};
+
 const getListAccReported = async (req, res) => {
   try {
     const page = req.query.page;
@@ -271,7 +287,7 @@ const getUserByAdmin = async (req, res) => {
   }
 };
 
-const handleEditProfileBrief = async(req, res) => {
+const handleEditProfileBrief = async (req, res) => {
   const { username, fullname, bio } = req.body;
   console.log(req.body);
   if (!username || !fullname) {
@@ -290,7 +306,7 @@ const handleEditProfileBrief = async(req, res) => {
     message: userData.errMessage,
     user: userData.user ? userData.user : {},
   });
-}
+};
 module.exports = {
   handleLoging: handleLoging,
   handleLogout: handleLogout,
@@ -305,6 +321,7 @@ module.exports = {
   handleCheckFriendRelation: handleCheckFriendRelation,
   getUserBySearch: getUserBySearch,
   getListUser: getListUser,
+  getIdZodiacByIdUser: getIdZodiacByIdUser,
   getListAccReported: getListAccReported,
   deleteUserByAdmin: deleteUserByAdmin,
   getUserByAdmin: getUserByAdmin,

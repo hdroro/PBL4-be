@@ -13,12 +13,12 @@ class noti_zodiac {
   async getZodiacMessageByIdUser(idUser) {
     return new Promise((resolve, reject) => {
       const query = `
-            select *
-            from notification_zodiac as noti 
-            join zodiac_message as msg on noti.idZodiacMessage = msg.idZodiac_Message 
-            join zodiac as zd on zd.idZodiac = msg.idZodiac
-            where noti.idUser = ${idUser}
-            order by msg.timePost desc`;
+        select noti.idNoti, noti.isRead, msg.idZodiac_Message, msg.idZodiac, msg.content, msg.timePost, zd.nameZodiac, user.timeRegister from notification_zodiac as noti 
+        join zodiac_message as msg on noti.idZodiacMessage = msg.idZodiac_Message 
+        join zodiac as zd on zd.idZodiac = msg.idZodiac
+        join user on user.idUser = noti.idUser
+        where noti.idUser = ${idUser} and msg.timePost >= user.timeRegister
+        order by msg.timePost desc`;
       db.query(query, (err, results) => {
         if (err)
           return reject({
@@ -33,7 +33,7 @@ class noti_zodiac {
   async getZodiacMessageByIdNoti(idNoti) {
     return new Promise((resolve, reject) => {
       const query = `
-      select zodiac.nameZodiac, zm.content, noti.timeSend from notification_zodiac as noti join zodiac_message as zm on noti.idZodiacMessage = zm.idZodiac_Message 
+      select zodiac.nameZodiac, zm.content, zm.timePost from notification_zodiac as noti join zodiac_message as zm on noti.idZodiacMessage = zm.idZodiac_Message 
       join zodiac on zodiac.idZodiac = zm.idZodiac
       where noti.idNoti=${idNoti}`;
       db.query(query, (err, results) => {

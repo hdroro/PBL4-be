@@ -97,6 +97,7 @@ async function handleCreateConversation(
   messageText,
   timeSend,
   idConversation,
+  isFile,
   fileName
 ) {
   try {
@@ -107,7 +108,7 @@ async function handleCreateConversation(
       messageText,
       timeSend,
       idConversation,
-      0,
+      isFile,
       fileName
     );
     const message = await messageModel.saveMessage();

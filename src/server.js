@@ -5,6 +5,7 @@ import initWebRoutes from "./route/web";
 import connectDB from "./config/conectDB";
 import cors from "cors";
 const session = require("express-session");
+require("dotenv").config(); // giup chay dc dong process.env
 
 let app = express();
 const corsOptions = {
@@ -22,8 +23,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-
-require("dotenv").config(); // giup chay dc dong process.env
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
