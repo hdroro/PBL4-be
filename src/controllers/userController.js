@@ -90,11 +90,17 @@ const getInfoByID = async (req, res) => {
 };
 
 const handleSignup = async (req, res) => {
-  const { username, password, fullname, date, gender } = req.body;
-  if (!username || !password || !fullname || !date) {
+  const { username, password, repeatpassword, fullname, date, gender } = req.body;
+  if (!username || !password || !repeatpassword || !fullname || !date) {
     return res.status(200).json({
       errCode: 4,
       message: "Missing inputs parameter!.",
+    });
+  }
+  if(repeatpassword != password) {
+    return res.status(200).json({
+      errCode: 5,
+      message: "Retype password wrong!.",
     });
   }
   const userData = await userService.handleUserSignUp(
@@ -115,7 +121,7 @@ const handleEditProfile = async (req, res) => {
   const { username, fullname, bio, birth, gender } = req.body;
   console.log("post");
   console.log(req.body);
-  if (!username || !fullname || !bio || !birth) {
+  if (!username || !fullname || !birth) {
     return res.status(200).json({
       errCode: 4,
       message: "Missing inputs parameter!.",
@@ -167,7 +173,7 @@ const handleChangePassword = async (req, res) => {
   if (newpassword != retypepassword) {
     return res.status(200).json({
       errCode: 3,
-      message: "retype password wrong!",
+      message: "Retype password wrong!",
     });
   }
 
@@ -267,9 +273,8 @@ const getUserByAdmin = async (req, res) => {
 
 const handleEditProfileBrief = async(req, res) => {
   const { username, fullname, bio } = req.body;
-  console.log("post");
   console.log(req.body);
-  if (!username || !fullname || !bio) {
+  if (!username || !fullname) {
     return res.status(200).json({
       errCode: 4,
       message: "Missing inputs parameter!.",

@@ -14,12 +14,20 @@ let handleUserLogin = (username, password) => {
       if (idRole != 0) idRole_ = 1;
       else idRole_ = 0;
       const user = new account(username, password, idRole_);
-      const idUser = await user.getIdAccount(username);
-      let userCheck = await user.checkUsername();
+      let userCheck;
+      // try {
+        
+        userCheck = await user.checkUsername();
+      // }
+      // catch(error) {
+      //   console.log(error);
+      // }
+      // let 
       if (userCheck) {
         let passwordCheck = await user.checkPassword(password);
 
         if (!!passwordCheck) {
+          let idUser = await user.getIdAccount(username);
           userData.errCode = 0;
           userData.errMessage = "OK";
 
@@ -32,11 +40,12 @@ let handleUserLogin = (username, password) => {
         }
       } else {
         userData.errCode = 2;
-        userData.errMessage = `User not found`;
+        userData.errMessage = `Not exist username`;
       }
       resolve(userData);
     } catch (e) {
-      reject(e);
+      // reject(e);
+      throw e;
     }
   });
 };
