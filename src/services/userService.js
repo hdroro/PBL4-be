@@ -12,7 +12,7 @@ let handleUserLogin = (username, password) => {
       else idRole_ = 0;
       const user = new account(username, password, idRole_);
       let userCheck;
-        userCheck = await user.checkUsername();
+      userCheck = await user.checkUsername();
       if (userCheck) {
         let passwordCheck = await user.checkPassword(password);
 
@@ -324,6 +324,7 @@ let handleCheckFriendRelation = (idAcc1, idAcc2) => {
 let handleGetListUser = async (page) => {
   try {
     var listUser = await new account().getListUser();
+    const lengthListUser = listUser.length;
     const perPage = 10;
     var lastPage = Math.ceil(listUser.length / perPage);
     if (lastPage === 0) lastPage = 1;
@@ -346,6 +347,7 @@ let handleGetListUser = async (page) => {
     return {
       errCode: 0,
       errMessage: "OK",
+      size: lengthListUser,
       listUser: listUser,
       prev: prev,
       next: next,

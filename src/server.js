@@ -5,16 +5,19 @@ import initWebRoutes from "./route/web";
 import connectDB from "./config/conectDB";
 import cors from "cors";
 const session = require("express-session");
-require("dotenv").config(); // giup chay dc dong process.env
+require("dotenv").config();
 
 let app = express();
+
 const corsOptions = {
-  origin: "http://localhost:3000",
-  credentials: true, //access-control-allow-credentials:true
+  origin: "http://192.168.241.219:3000",
+  credentials: true,
   optionSuccessStatus: 200,
 };
-app.use("/public", express.static("src/public"));
+
 app.use(cors(corsOptions));
+
+app.use("/public", express.static("src/public"));
 
 app.use(
   session({
@@ -40,6 +43,6 @@ initWebRoutes(app);
 
 let port = process.env.PORT || 8080;
 
-app.listen(port, () => {
-  console.log("Backend Nodejs is running on the port: " + port);
+app.listen(port, "192.168.241.219", () => {
+  console.log(`Server is running on http://192.168.241.219:${port}`);
 });

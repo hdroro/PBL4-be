@@ -128,6 +128,7 @@ async function handleCreateConversationOfFile(
   idConversation,
   fileName_
 ) {
+  console.log("fileName_fileName_", fileName_);
   try {
     const messageData = {};
     const messageModel = new Message(
@@ -149,9 +150,41 @@ async function handleCreateConversationOfFile(
   }
 }
 
+async function handleGetInforMessageById(idMessage) {
+  try {
+    const messageData = {};
+
+    messageData.errCode = 0;
+    messageData.errMessage = "OK";
+    messageData.messageText = await new Message().getMessage(idMessage);
+    return messageData;
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function handleGetMaxMessageId() {
+  try {
+    const messageData = {};
+
+    messageData.errCode = 0;
+    messageData.errMessage = "OK";
+    console.log(
+      "await new Message().getIdMessage()",
+      await new Message().getIdMessage()
+    );
+    messageData.idMessage = await new Message().getIdMessage();
+    console.log("messageData", messageData);
+    return messageData;
+  } catch (e) {
+    console.log("errr", e);
+  }
+}
 module.exports = {
   handleCreateConversation: handleCreateConversation,
   handleLoadMessage: handleLoadMessage,
   handleGetAcc: handleGetAcc,
   handleCreateConversationOfFile: handleCreateConversationOfFile,
+  handleGetInforMessageById: handleGetInforMessageById,
+  handleGetMaxMessageId: handleGetMaxMessageId,
 };

@@ -71,7 +71,9 @@ let initWebRoutes = (app) => {
 
   //message
   router.get("/api/user-load-message", messageController.getMessage);
+  router.get("/api/get-message-by-idMessage", messageController.getMessageById);
   router.get("/api/user-list", messageController.getAccByidConversation);
+  router.get("/api/get-max-idMessage", messageController.getMaxMessageId);
   router.post("/api/save-message", messageController.postMessage);
   router.post("/api/save-file", messageController.postFile);
   router.get("/api/get-file", messageController.getFile);
